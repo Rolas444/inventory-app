@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+  email String @unique
+  name String 
+  password String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  roles     UserRole[]
+  transactions Transaction[]
+}
+
+model Role {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  users     UserRole[]
+}
+
+model UserRole {
+  userId    String
+  roleId    String
+  user      User @relation(fields: [userId], references: [id])
+  role      Role @relation(fields: [roleId], references: [id])
+  @@id([userId, roleId])
+}
+
+model Product {
+  id String @id @default(uuid())
+  sku String @unique
+  name String
+  price Float
+  status Boolean @default(true)
+  stock Int
+  image String
+  description String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  platformProducts PlatformProduct[]
+}
+
+model TypeTransaction {
+    id String @id @default(uuid())
+    name String @unique
+    description String
+    platform Boolean
+    Status Boolean @default(true)
+    visible Boolean
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    platformProducts PlatformProduct[]
+    transactions Transaction[]
+}
+
+model PlatformProduct {
+    id String @id @default(uuid())
+    productId String
+    typeTransactionId String
+    quantity Int
+    price Decimal
+    product Product @relation(fields: [productId], references: [id])
+    typeTransaction TypeTransaction @relation(fields: [typeTransactionId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+}
+
+model Transaction {
+    id String @id @default(uuid())
+    userId String
+    typeTransactionId String
+    quantity Int
+    price Decimal
+    user User @relation(fields: [userId], references: [id])
+    typeTransaction TypeTransaction @relation(fields: [typeTransactionId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+
+
+
+
