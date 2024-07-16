@@ -1,6 +1,8 @@
 import GitHub from "next-auth/providers/github"
 import type { NextAuthConfig } from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import prisma from "./lib/db"
+import bcrypt from "bcryptjs"
  
 // Notice this is only an object, not a full Auth.js instance
 export default {
@@ -13,19 +15,20 @@ export default {
       //   password: {},
       // },
       authorize: async (credentials) => {
-        console.log({ credentials })
-        let user = null
-        if(credentials.email !== "mail@test.com"){
-          throw new Error("User not found.")
-        }
-        // const pwHash = saltAndHashPassword(credentials.password)
- 
-        // user = await getUserFromDb(credentials.email, pwHash)
- 
-        // if (!user) {
+        // console.log({ credentials })
+        // let user = null
+        // if(credentials.username !== "mail@test.com"){
         //   throw new Error("User not found.")
         // }
- 
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.username as string,
+          },
+        });
+        if(!user){
+          throw new Error("User not found.")
+        }
+        const isValid = await bcrypt.compare(credentials.password as string, user.password);
         // return user object with the their profile data
         // return user
         return {

@@ -8,29 +8,70 @@ datasource db {
   directUrl  = env("DIRECT_URL")
 }
 
+// model User {
+//   id String @id @default(uuid())
+//   email String @unique
+//   name String 
+//   password String 
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   roles     UserRole[]
+//   transactions Transaction[]
+// }
 model User {
-  id String @id @default(uuid())
-  email String @unique
-  name String 
-  password String 
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  accounts      Account[]
+  // sessions      Session[]
+  // Optional for WebAuthn support
+  // Authenticator Authenticator[]
+  // roles         UserRole[]
+  roleId        String
+  role      Role @relation(fields: [roleId], references: [id])
+  transactions    Transaction[]
+ 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  roles     UserRole[]
-  transactions Transaction[]
 }
+ 
 
 model Role {
   id        String    @id @default(uuid())
   name      String    @unique
-  users     UserRole[]
+  users     User[]
 }
 
-model UserRole {
-  userId    String
-  roleId    String
-  user      User @relation(fields: [userId], references: [id])
-  role      Role @relation(fields: [roleId], references: [id])
-  @@id([userId, roleId])
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
 }
 
 model Product {
