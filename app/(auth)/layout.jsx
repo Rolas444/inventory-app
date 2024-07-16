@@ -1,7 +1,7 @@
 const AuthLayout = ({ children }) => {
 
     return (<>
-        <div className="container w-full mx-auto">
+        <div className="container w-full flex">
                 {children}
         </div>
     </>)
