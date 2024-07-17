@@ -1,21 +1,26 @@
 import {auth} from "@/auth"
 import BtnLogout from "@/components/ui/btn-logout"
 
-async function LayoutDash() {
+async function LayoutDash({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
     const session = await auth();
 
-    if (!session) {
-        return <div>loading...</div>;
-    }
+    // if (!session) {
+    //     return <div>loading...</div>;
+    // }
 
   return (
     <>
-    <div className="container">
+    {/* <div className="container">
         <pre>{JSON.stringify(session, null, 2)}</pre>
-    </div>
+    </div> */}
     <div>
         <BtnLogout />
     </div>
+    {children}
   </>)
 }
 
