@@ -28,7 +28,10 @@ export default {
         if(!user){
           throw new Error("User not found.")
         }
-        const isValid = await bcrypt.compare(credentials.password as string, user.password);
+        const isValid = bcrypt.compare(credentials.password as string, user.password as string);
+        if(!isValid){
+          throw new Error("Invalid password.")
+        }
         // return user object with the their profile data
         // return user
         return {
