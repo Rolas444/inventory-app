@@ -3,7 +3,7 @@ import authConfig from "./auth.config"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import prisma from "./lib/db"
 
-const db = prisma
+// const db = prisma
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     // adapter: PrismaAdapter(db),
@@ -12,13 +12,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     callbacks:{
       jwt({token,user}){
         if(user){
-          token.role = user.role
+          token.role = user.roleId
         }
         return token;
       },
       session({session, token}){
         if(session.user){
-          session.user.role = token.role;
+          session.user.roleId = token.role;
         }
         return session;
       },

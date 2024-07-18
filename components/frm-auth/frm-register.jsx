@@ -1,12 +1,22 @@
 'use client'
 import { useForm } from "react-hook-form";
 import InputControlled from "../ui/input-controlled";
+import { RegisterAction } from "@/actions/auth-actions";
+import { toast } from "sonner";
 
 const FrmRegister = () => {
     const { control, handleSubmit,watch } = useForm();
 
     const onSubmit = async () => {
+        toast.info('Registrando usuario');
         console.log(watch());
+        let result = await RegisterAction(watch());
+        if(result.error){
+           toast.error(result.error);
+        }
+        if(result.success){
+            toast.success('Usuario registrado');
+        }
     }
 
     return (<>

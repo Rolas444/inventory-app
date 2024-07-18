@@ -14,9 +14,9 @@ async function LayoutDash({
 
   return (
     <>
-    {/* <div className="container">
+    {session && <div className="container">
         <pre>{JSON.stringify(session, null, 2)}</pre>
-    </div> */}
+    </div> }
     <div>
         <BtnLogout />
     </div>

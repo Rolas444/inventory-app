@@ -11,11 +11,11 @@ declare module "next-auth" {
 //   }
  interface Session {
     user: {
-        role?: string;
+        roleId?: string;
     }& DefaultSession["user"];
  }
     interface User {
-        role?: string;
+        roleId?: string;
     }
 }
 

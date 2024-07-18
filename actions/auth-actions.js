@@ -57,7 +57,7 @@ export const RegisterAction = async (data)=>{
       })
 
       return {success: true}
-    } catch(e){
+    } catch(error){
         if (error instanceof AuthError) {
             return { error: error.cause?.err?.message };
           }

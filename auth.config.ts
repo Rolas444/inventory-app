@@ -35,11 +35,7 @@ export default {
         }
         // return user object with the their profile data
         // return user
-        return {
-          id: "1",
-          name: "Test User",
-          email: "mail@test.com"
-        }
+        return user
       },
     }),
   ],
