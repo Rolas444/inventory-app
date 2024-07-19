@@ -20,6 +20,7 @@ export default {
         // if(credentials.username !== "mail@test.com"){
         //   throw new Error("User not found.")
         // }
+        // console.log(credentials)
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.username as string,
@@ -29,8 +30,9 @@ export default {
           throw new Error("User not found.")
         }
         
-        const isValid = bcrypt.compare(credentials.password as string, user.password as string);
+        const isValid = await  bcrypt.compare(credentials.password as string , user.password as string);
         if(!isValid){
+          // console.log("Invalid password.")
           throw new Error("Invalid password.")
         }
         // return user object with the their profile data

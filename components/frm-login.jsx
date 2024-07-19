@@ -29,7 +29,7 @@ const FrmLogin = () => {
 
     const onSubmit = async () => {
         const data = { ...watch() };
-        // console.log(data);
+        console.log(data);
         // fnLogin(data)
         const resultLogin = await LoginAction(data);
         if (resultLogin.success) {
@@ -41,8 +41,9 @@ const FrmLogin = () => {
     }
 
     return (<>
-        <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <CardContent>
                 <div className="grid gap-4 mb-2">
                     <div className="grid gap-2">
                         <Label>Usuario</Label>
@@ -55,12 +56,13 @@ const FrmLogin = () => {
 
 
                 </div>
+            </CardContent>
+            <CardFooter>
+                <Button type="submit" className="w-full">Sign in</Button>
+            </CardFooter>
+        </form>
 
-            </form>
-        </CardContent>
-        <CardFooter>
-            <Button className="w-full">Sign in</Button>
-        </CardFooter>
+
 
     </>)
 }

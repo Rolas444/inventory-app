@@ -6,16 +6,18 @@ import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 
 export const LoginAction = async (data)=>{
+  console.log('vamos a ejecutarnos')
     try {
         await signIn('credentials', {
             redirect: false,
             username: data.username,
             password: data.password,
         })
+        // console.log(result);
         return {success: true}
     }catch(e){
         console.log(e);
-        return {error: e}
+        return {error: JSON.stringify(e)}
     }
 }
 
