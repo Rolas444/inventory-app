@@ -12,8 +12,10 @@ export const LoginAction = async (data)=>{
             username: data.username,
             password: data.password,
         })
+        return {success: true}
     }catch(e){
         console.log(e);
+        return {error: e}
     }
 }
 

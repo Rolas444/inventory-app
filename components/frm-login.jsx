@@ -2,36 +2,66 @@
 // import { signIn } from "@/auth";
 import { useForm } from "react-hook-form"
 import { LoginAction } from "@/actions/auth-actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-const FrmLogin = ({fnLogin}) => {
+import { Button } from "@/components/ui/button"
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+const FrmLogin = () => {
+    const route = useRouter();
 
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
-      } = useForm();
+    } = useForm();
 
     const onSubmit = async () => {
-        const data = {...watch()};
+        const data = { ...watch() };
         // console.log(data);
         // fnLogin(data)
-        await LoginAction(data);
+        const resultLogin = await LoginAction(data);
+        if (resultLogin.success) {
+            route.push('/dashboard');
+        }
+        else {
+            toast.error('Usuario o contraseña incorrectos');
+        }
     }
 
     return (<>
-    <div className="w-full flex justify-center">
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-2">
-            <input type="text" placeholder="Usuario" {...register("username", { required: true })} />
-            <input type="password" placeholder="Contraseña" {...register("password", { required: true })} />
-            </div>
-            <div>
-                <button type="submit">Ingresar</button>
-            </div>
-        </form>
-        
-    </div>
+        <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="grid gap-4 mb-2">
+                    <div className="grid gap-2">
+                        <Label>Usuario</Label>
+                        <Input type="text" {...register("username", { required: true })} />
+                    </div>
+                    <div className="grid gap-2">
+                        <Label>Contraseña</Label>
+                        <Input type="password" {...register("password", { required: true })} />
+                    </div>
+
+
+                </div>
+
+            </form>
+        </CardContent>
+        <CardFooter>
+            <Button className="w-full">Sign in</Button>
+        </CardFooter>
+
     </>)
 }
 

@@ -1,10 +1,27 @@
-import FrmLogin from "../../../components/frm-login";
+import FrmLogin from "@/components/frm-login";
+import { Button } from "@/components/ui/button"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const LoginPage = () => {
     return (<>
-        <h1>Login</h1>
-        <p>Log in to your account</p>
-        <FrmLogin />
+        
+        <CardHeader>
+            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardDescription>
+                Ingresa tu correo y contraseña para iniciar sesión.
+            </CardDescription>
+        </CardHeader>
+        
+            <FrmLogin />
+
     </>)
 }
 

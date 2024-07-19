@@ -1,9 +1,31 @@
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
 const AuthLayout = ({ children }) => {
 
+
     return (<>
-        <div className="container w-full flex">
-                {children}
-        </div>
+        <main className=" flex items-center justify-center h-screen min-h-screen">
+            {/* <div className="flex items-center justify-center py-12"> */}
+
+                {/* <div className=""> */}
+                    <Card className="mx-auto max-w-sm mt-12">
+                        {children}
+                    </Card>
+                {/* </div> */}
+
+            {/* </div> */}
+        </main>
+
     </>)
 }
 
