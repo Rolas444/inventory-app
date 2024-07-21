@@ -1,70 +1,82 @@
-'use server'
+"use server";
 
-import { signIn } from "@/auth"
+import { signIn } from "@/auth";
 import prisma from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 
-export const LoginAction = async (data)=>{
-  console.log('vamos a ejecutarnos')
-    try {
-        await signIn('credentials', {
-            redirect: false,
-            username: data.username,
-            password: data.password,
-        })
-        // console.log(result);
-        return {success: true}
-    }catch(e){
-        console.log(e);
-        return {error: JSON.stringify(e)}
-    }
-}
+export const LoginAction = async (data) => {
+  console.log("vamos a ejecutarnos");
+  try {
+    await signIn("credentials", {
+      redirect: false,
+      username: data.username,
+      password: data.password,
+    });
+    // console.log(result);
+    return { success: true };
+  } catch (e) {
+    console.log(e);
+    return { error: JSON.stringify(e) };
+  }
+};
 
-export const RegisterAction = async (data)=>{
-    
-    try{
-         // verificar si el usuario ya existe
-     const user = await prisma.user.findUnique({
-        where: {
-          email: data.email,
-        },
-        include: {
-          accounts: true, // Incluir las cuentas asociadas
-        },
-      });
+export const RegisterAction = async (data) => {
+  try {
+    // verificar si el usuario ya existe
+    const user = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+      include: {
+        accounts: true, // Incluir las cuentas asociadas
+      },
+    });
 
-      if (user) {
-        // Verificar si tiene cuentas OAuth vinculadas
-        const oauthAccounts = user.accounts.filter(
-          (account) => account.type === "oauth"
-        );
-        if (oauthAccounts.length > 0) {
-          return {
-            error:
-              "To confirm your identity, sign in with the same account you used originally.",
-          };
-        }
+    if (user) {
+      // Verificar si tiene cuentas OAuth vinculadas
+      const oauthAccounts = user.accounts.filter(
+        (account) => account.type === "oauth",
+      );
+      if (oauthAccounts.length > 0) {
         return {
-          error: "User already exists",
+          error:
+            "To confirm your identity, sign in with the same account you used originally.",
         };
       }
-
-      const passwordHash = await bcrypt.hash(data.password, 10);
-
-      await prisma.user.create({
-        data: {
-          email: data.email,
-          name: data.name,
-          password: passwordHash,
-        },
-      })
-
-      return {success: true}
-    } catch(error){
-        if (error instanceof AuthError) {
-            return { error: error.cause?.err?.message };
-          }
-          return { error: "error 500" };
+      return {
+        error: "User already exists",
+      };
     }
-}
+
+    const passwordHash = await bcrypt.hash(data.password, 10);
+
+    await prisma.user.create({
+      data: {
+        email: data.email,
+        name: data.name,
+        password: passwordHash,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return { error: error.cause?.err?.message };
+    }
+    return { error: "error 500" };
+  }
+};
+
+export const AuthLevel = async (idRole) => {
+  try {
+    const role = await prisma.role.findUnique({
+      where: {
+        id: idRole,
+      },
+    });
+    return role;
+  } catch (e) {
+    return { error: e };
+  }
+};
