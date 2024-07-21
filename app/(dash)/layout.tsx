@@ -80,14 +80,14 @@ async function LayoutDash({
             href: "/products",
           },
           {
-            title: "Customers",
+            title: "Usuarios",
             icon: <Users className="h-4 w-4" />,
-            href: "/customers",
+            href: "/users",
           },
           {
-            title: "Analytics",
+            title: "Reportes",
             icon: <LineChart className="h-4 w-4" />,
-            href: "/analytics",
+            href: "/reports",
           },
         ];
 
