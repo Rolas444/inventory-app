@@ -1,4 +1,5 @@
 "use client";
+import { DialogTrigger } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +13,9 @@ import { EllipsisVertical } from "lucide-react";
 
 const handleEdit = (row) => {
   console.log(row);
-}
+};
 
-const handleDelete = (row) => {
-
-}
+const handleDelete = (row) => {};
 
 export const userColumns = [
   {
@@ -51,10 +50,17 @@ export const userColumns = [
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem ><div onClick={()=>handleEdit(row)} className="cursor-pointer">
-              Editar
-              </div></DropdownMenuItem>
-            <DropdownMenuItem>Eliminar</DropdownMenuItem>
+            <DropdownMenuItem>
+              <DialogTrigger
+                onClick={() => handleEdit(row)}
+                className="cursor-pointer"
+              >
+                Editar
+              </DialogTrigger>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <DialogTrigger>Eliminar</DialogTrigger>
+            </DropdownMenuItem>
             {/* <DropdownMenuSeparator />
             <DropdownMenuItem>Ver</DropdownMenuItem> */}
           </DropdownMenuContent>
