@@ -3,53 +3,39 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl  = env("DIRECT_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
-// model User {
-//   id String @id @default(uuid())
-//   email String @unique
-//   name String 
-//   password String 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   roles     UserRole[]
-//   transactions Transaction[]
-// }
 model User {
-  id            String          @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String        @unique
   emailVerified DateTime?
   image         String?
+  phone         String?
   password      String?
-  accounts      Account[]
-  // sessions      Session[]
-  // Optional for WebAuthn support
-  // Authenticator Authenticator[]
-  // roles         UserRole[]
+  status        Boolean       @default(true)
   roleId        String
-  role      Role @relation(fields: [roleId], references: [id])
-  transactions    Transaction[]
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  accounts      Account[]
+  transactions  Transaction[]
+  role          Role          @relation(fields: [roleId], references: [id])
 }
- 
 
 model Role {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  users     User[]
+  id    String @id @default(uuid())
+  name  String @unique
+  users User[]
 }
 
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
 }
 
@@ -65,68 +51,60 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@id([provider, providerAccountId])
 }
 
 model Product {
-  id String @id @default(uuid())
-  sku String @unique
-  name String
-  price Float
-  status Boolean @default(true)
-  stock Int
-  image String
-  description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String            @id @default(uuid())
+  sku              String            @unique
+  name             String
+  price            Float
+  status           Boolean           @default(true)
+  stock            Int
+  image            String
+  description      String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   platformProducts PlatformProduct[]
 }
 
 model TypeTransaction {
-    id String @id @default(uuid())
-    name String @unique
-    description String
-    platform Boolean
-    Status Boolean @default(true)
-    visible Boolean
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    platformProducts PlatformProduct[]
-    transactions Transaction[]
+  id               String            @id @default(uuid())
+  name             String            @unique
+  description      String
+  platform         Boolean
+  Status           Boolean           @default(true)
+  visible          Boolean
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  platformProducts PlatformProduct[]
+  transactions     Transaction[]
 }
 
 model PlatformProduct {
-    id String @id @default(uuid())
-    productId String
-    typeTransactionId String
-    quantity Int
-    price Decimal
-    product Product @relation(fields: [productId], references: [id])
-    typeTransaction TypeTransaction @relation(fields: [typeTransactionId], references: [id])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
+  id                String          @id @default(uuid())
+  productId         String
+  typeTransactionId String
+  quantity          Int
+  price             Decimal
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  product           Product         @relation(fields: [productId], references: [id])
+  typeTransaction   TypeTransaction @relation(fields: [typeTransactionId], references: [id])
 }
 
 model Transaction {
-    id String @id @default(uuid())
-    userId String
-    typeTransactionId String
-    quantity Int
-    price Decimal
-    user User @relation(fields: [userId], references: [id])
-    typeTransaction TypeTransaction @relation(fields: [typeTransactionId], references: [id])
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id                String          @id @default(uuid())
+  userId            String
+  typeTransactionId String
+  quantity          Int
+  price             Decimal
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  typeTransaction   TypeTransaction @relation(fields: [typeTransactionId], references: [id])
+  user              User            @relation(fields: [userId], references: [id])
 }
-
-
-
-
-

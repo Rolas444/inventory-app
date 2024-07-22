@@ -13,6 +13,8 @@ import {
   Search,
   ShoppingCart,
   Users,
+  ArrowLeftRight,
+  PackageMinus,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -78,6 +80,16 @@ async function LayoutDash({
             title: "Products",
             icon: <Package className="h-4 w-4" />,
             href: "/products",
+          },
+          {
+            title: "Movimientos",
+            icon: <PackageMinus className="h-4 w-4" />,
+            href: "/transactions",
+          },
+          {
+            title: "Tipos de Movimiento",
+            icon: <ArrowLeftRight className="h-4 w-4" />,
+            href: "/type-transactions",
           },
           {
             title: "Usuarios",
