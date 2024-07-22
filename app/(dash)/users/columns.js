@@ -8,6 +8,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { EllipsisVertical } from "lucide-react";
+
+const handleEdit = (row) => {
+  console.log(row);
+}
+
+const handleDelete = (row) => {
+
+}
+
 export const userColumns = [
   {
     header: "Nombre",
@@ -35,14 +45,18 @@ export const userColumns = [
       return (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button className="btn btn-sm">Acciones</button>
+            {/* <button className="btn btn-sm"> */}
+            <EllipsisVertical />
+            {/* </button> */}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem>Editar</DropdownMenuItem>
+            <DropdownMenuItem ><div onClick={()=>handleEdit(row)} className="cursor-pointer">
+              Editar
+              </div></DropdownMenuItem>
             <DropdownMenuItem>Eliminar</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Ver</DropdownMenuItem>
+            {/* <DropdownMenuSeparator />
+            <DropdownMenuItem>Ver</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
