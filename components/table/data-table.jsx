@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const DataTable = ({ columns, data }) => {
+const DataTable = ({ columns, data =[] }) => {
   const table = useReactTable({
     data,
     columns,

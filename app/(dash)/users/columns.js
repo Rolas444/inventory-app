@@ -8,14 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {useInventoryStore} from "@/zustand/store";
 
 import { EllipsisVertical } from "lucide-react";
 
-const handleEdit = (row) => {
-  console.log(row);
+const handleEdit = (e, row) => {
+  const {setEntityObject} = useInventoryStore();
+  setEntityObject('user', row.original.id, 'edit');
 };
 
-const handleDelete = (row) => {};
+// const handleDelete = (row) => {};
 
 export const userColumns = [
   {
@@ -52,15 +54,15 @@ export const userColumns = [
             <DropdownMenuLabel>Acciones</DropdownMenuLabel>
             <DropdownMenuItem>
               <DialogTrigger
-                onClick={() => handleEdit(row)}
+                onClick={(e) => handleEdit(e,row)}
                 className="cursor-pointer"
               >
                 Editar
               </DialogTrigger>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <DialogTrigger>Eliminar</DialogTrigger>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             {/* <DropdownMenuSeparator />
             <DropdownMenuItem>Ver</DropdownMenuItem> */}
           </DropdownMenuContent>

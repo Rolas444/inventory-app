@@ -1,8 +1,9 @@
 import React from "react";
 import FrmRegister from "@/components/frm-auth/frm-register";
 import DataTable from "@/components/table/data-table";
-import { userColumns } from "./columns";
+// import { userColumns } from "./columns";
 import { getQuery } from "@/actions/query-actions";
+import UserForms from "./forms";
 import {
   Dialog,
   DialogContent,
@@ -22,9 +23,9 @@ const PageUsers = async () => {
   if (result.error) {
     return <div>No se encontraron registros</div>;
   }
-  const users = result.data;
+  const users = result.data ;
 
-  const columns = userColumns;
+  // const columns = userColumns;
 
   return (
     <>
@@ -33,16 +34,7 @@ const PageUsers = async () => {
       </div>
       <div className="container py-10">
         <Dialog>
-          <DataTable columns={columns} data={users} />
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
-              <DialogDescription>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
+           <UserForms users={users} />
         </Dialog>
       </div>
     </>
