@@ -25,7 +25,7 @@ const FrmRegister = () => {
         }
     }
 
-    console.log(watch())
+    // console.log(watch())
 
     return (<>
         <div>
@@ -45,7 +45,9 @@ const FrmRegister = () => {
 
                     </div>
                 </div>
-                <button type="submit" className="btn btn-primary">Registrar</button>
+                <div className="flex justify-end">
+                <button type="submit" className="btn btn-primary">Guardar</button>
+                </div>
             </form>
 
         </div>

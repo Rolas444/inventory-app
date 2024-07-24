@@ -29,7 +29,7 @@ const FrmLogin = () => {
 
     const onSubmit = async () => {
         const data = { ...watch() };
-        console.log(data);
+        // console.log(data);
         // fnLogin(data)
         const resultLogin = await LoginAction(data);
         if (resultLogin.success) {
