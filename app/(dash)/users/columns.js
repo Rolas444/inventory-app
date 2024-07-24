@@ -39,35 +39,5 @@ export const userColumns = [
   {
     header: "Rol",
     accessorKey: "role.name",
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            {/* <button className="btn btn-sm"> */}
-            <EllipsisVertical />
-            {/* </button> */}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <DialogTrigger
-                onClick={(e) => handleEdit(e,row)}
-                className="cursor-pointer"
-              >
-                Editar
-              </DialogTrigger>
-            </DropdownMenuItem>
-            {/* <DropdownMenuItem>
-              <DialogTrigger>Eliminar</DialogTrigger>
-            </DropdownMenuItem> */}
-            {/* <DropdownMenuSeparator />
-            <DropdownMenuItem>Ver</DropdownMenuItem> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  }
 ];

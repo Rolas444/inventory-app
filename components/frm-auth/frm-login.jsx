@@ -41,9 +41,7 @@ const FrmLogin = () => {
     }
 
     return (<>
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="grid items-start gap-4">
                 <div className="grid gap-4 mb-2">
                     <div className="grid gap-2">
                         <Label>Usuario</Label>
@@ -56,13 +54,9 @@ const FrmLogin = () => {
 
 
                 </div>
-            </CardContent>
-            <CardFooter>
                 <Button type="submit" className="w-full">Sign in</Button>
-            </CardFooter>
+            
         </form>
-
-
 
     </>)
 }

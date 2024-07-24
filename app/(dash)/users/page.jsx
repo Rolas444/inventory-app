@@ -1,6 +1,4 @@
 import React from "react";
-import FrmRegister from "@/components/frm-auth/frm-register";
-import DataTable from "@/components/table/data-table";
 // import { userColumns } from "./columns";
 import { getQuery } from "@/actions/query-actions";
 import UserForms from "./forms";
