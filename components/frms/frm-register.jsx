@@ -5,7 +5,9 @@ import { RegisterAction } from "@/actions/auth-actions";
 import { toast } from "sonner";
 import { Combo } from "next/font/google";
 // import AutocompleteControlled from "@/components/ui/autocomplete-controlled";
-import ComboboxControlled from "@/components/ui/combobox-controlled";
+// import ComboboxControlled from "@/components/ui/combobox-controlled";
+import SelectControlled from "@/components/ui/select-controlled";
+import CheckboxControlled from "@/components/ui/checkbox-controlled";
 
 const FrmRegister = () => {
     const { control, handleSubmit,watch } = useForm();
@@ -37,7 +39,9 @@ const FrmRegister = () => {
                     <div>
                         <InputControlled name='phone' control={control} label='Celular' rules={{ required: true }} />
                         {/* <AutocompleteControlled name='roleId' control={control} label='Rol' options={roles} /> */}
-                        <ComboboxControlled name='roleId' control={control} label='Rol' options={roles} />
+                        {/* <ComboboxControlled name='roleId' control={control} label='Rol' options={roles} /> */}
+                        <SelectControlled name='roleId' control={control} label='Rol' options={roles} />
+                        <CheckboxControlled name='active' control={control} label='Activo' />
 
                     </div>
                 </div>
