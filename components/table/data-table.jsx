@@ -65,7 +65,7 @@ const DataTable = ({ columns, data = [] }) => {
             onChange={(event) =>
               table.getColumn("email")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm"
+            className="max-w-sm m-2"
           />
           <div className="">
             <Button variant="ghost" className="btn btn-primary">Add</Button>
