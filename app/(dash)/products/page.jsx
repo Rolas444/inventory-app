@@ -1,9 +1,42 @@
-import React from 'react'
+import React from "react";
+// import { userColumns } from "./columns";
+import { getQuery } from "@/actions/query-actions";
+import UserForms from "./forms";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-const PageProducts = () => {
+const PageProducts = async () => {
+  var users =[]
+  // var roles = []
+
+  const result = await getQuery("product");
+  // console.log(result);
+  if (result.error) {
+    return <div>No se encontraron registros</div>;
+  }
+  users = result.data ;
+
+
+  // const columns = userColumns;
+
   return (
-    <div>PageProducts</div>
-  )
-}
+    <>
+      <div className="flex items-center">
+        <h1 className="text-lg font-semibold md:text-2xl">Productos</h1>
+      </div>
+      <div className="container py-10">
+        <Dialog>
+           <UserForms users={users} />
+        </Dialog>
+      </div>
+    </>
+  );
+};
 
-export default PageProducts
+export default PageProducts;

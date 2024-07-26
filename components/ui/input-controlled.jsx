@@ -9,7 +9,7 @@ const InputControlled = ({ name, control,label, rules = {}, type = 'text', class
                 control={control}
                 rules={rules}
                 render={({ field }) => (<>
-                    <div className='flex flex-col ' >
+                    <div className='flex flex-col py-2' >
                         
                             <label className='text-sm' htmlFor={name}>{label}</label>
                         

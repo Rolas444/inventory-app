@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/dialog";
 
 const PageUsers = async () => {
+  var users =[]
+  // var roles = []
+
   const result = await getQuery("user", {
     include: {
       role: true,
@@ -21,7 +24,8 @@ const PageUsers = async () => {
   if (result.error) {
     return <div>No se encontraron registros</div>;
   }
-  const users = result.data ;
+  users = result.data ;
+
 
   // const columns = userColumns;
 

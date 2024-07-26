@@ -51,19 +51,26 @@ export const RegisterAction = async (data) => {
 
     const passwordHash = await bcrypt.hash(data.password, 10);
 
-    await prisma.user.create({
+   const result = await prisma.user.create({
       data: {
         email: data.email,
+        // phone: data.phone,
+        roleId: data.roleId,
         name: data.name,
+        status: data.status,
         password: passwordHash,
       },
     });
-
+    console.log(result);
+    if(result.data)
     return { success: true };
+
   } catch (error) {
     if (error instanceof AuthError) {
+      console.log("AuthError", error);
       return { error: error.cause?.err?.message };
     }
+    console.log("Error", error);
     return { error: "error 500" };
   }
 };

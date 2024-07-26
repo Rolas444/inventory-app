@@ -21,7 +21,7 @@ import DataTable from "@/components/table/data-table";
 import { EllipsisVertical } from "lucide-react";
 import { userColumns } from "./columns";
 
-const UserForms = ({ users }) => {
+const ProductForms = ({ users }) => {
     const { entityName, entityId, action } = useInventoryStore()
     const { setEntityObject } = useInventoryStore();
 
@@ -58,11 +58,6 @@ const UserForms = ({ users }) => {
                                 Editar
                             </DialogTrigger>
                         </DropdownMenuItem>
-                        {/* <DropdownMenuItem>
-                    <DialogTrigger>Eliminar</DialogTrigger>
-                  </DropdownMenuItem> */}
-                        {/* <DropdownMenuSeparator />
-                  <DropdownMenuItem>Ver</DropdownMenuItem> */}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -74,7 +69,7 @@ const UserForms = ({ users }) => {
         <DataTable columns={columns} data={users} btnNew={btnNew} />
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-                <DialogTitle>{action === 'edit' ? 'Editar Usuario' : 'Nuevo Usuario'}</DialogTitle>
+                <DialogTitle>{action === 'edit' ? 'Editar Producto' : 'Nuevo Producto'}</DialogTitle>
                 <DialogDescription>
 
                 </DialogDescription>
@@ -91,4 +86,4 @@ const UserForms = ({ users }) => {
 
 }
 
-export default UserForms;
+export default ProductForms;

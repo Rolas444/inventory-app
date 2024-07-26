@@ -31,7 +31,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
-const DataTable = ({ columns, data = [] }) => {
+const DataTable = ({ columns, data = [], btnNew }) => {
 
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
@@ -68,7 +68,8 @@ const DataTable = ({ columns, data = [] }) => {
             className="max-w-sm m-2"
           />
           <div className="">
-            <Button variant="ghost" className="btn btn-primary">Add</Button>
+          {btnNew && btnNew()}
+            
           </div>
         </div>
         <div className="rounded-md border">

@@ -8,16 +8,38 @@ import { Combo } from "next/font/google";
 // import ComboboxControlled from "@/components/ui/combobox-controlled";
 import SelectControlled from "@/components/ui/select-controlled";
 import CheckboxControlled from "@/components/ui/checkbox-controlled";
+import { useEffect, useState } from "react";
+import { getQuery } from "@/actions/query-actions";
+import { createOPtions } from "@/lib/utils";
 
-const FrmRegister = () => {
-    const { control, handleSubmit,watch } = useForm();
-    const roles = [{label:'Administrador',value:'1'},{label:'Usuario',value:'2'}]
+const FrmRegister = ({stateForm}) => {
+
+    const [initForm, setInitForm] = useState({
+        name: '',
+        email: '',
+        password: '',
+        phone: '',
+        roleId: '',
+        status: false
+    });
+    const { control, handleSubmit,watch } = useForm(
+        { defaultValues: initForm }
+    );
+    const [roles, setRoles] = useState([]);
+
 
     const onSubmit = async () => {
+        var result = {}
         toast.info('Registrando usuario');
         console.log(watch());
-        let result = await RegisterAction(watch());
+        if(stateForm ==='new'){
+            result = await RegisterAction({...watch()});
+            console.log(result);
+        }
+        
+        
         if(result.error){
+            console.log(result)
            toast.error(result.error);
         }
         if(result.success){
@@ -25,7 +47,21 @@ const FrmRegister = () => {
         }
     }
 
+    const getRoles = async () => {
+        const result = await getQuery("role");
+        if (result.error) {
+            toast.error('Error al obtener roles');
+        }
+
+
+        setRoles(createOPtions(result.data, 'id', 'name'));
+    }
+
     // console.log(watch())
+
+    useEffect(()=>{
+        getRoles();
+    },[])
 
     return (<>
         <div>
@@ -41,7 +77,7 @@ const FrmRegister = () => {
                         {/* <AutocompleteControlled name='roleId' control={control} label='Rol' options={roles} /> */}
                         {/* <ComboboxControlled name='roleId' control={control} label='Rol' options={roles} /> */}
                         <SelectControlled name='roleId' control={control} label='Rol' options={roles} />
-                        <CheckboxControlled name='active' control={control} label='Activo' />
+                        <CheckboxControlled name='status' control={control} label='Activo' />
 
                     </div>
                 </div>
