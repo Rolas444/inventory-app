@@ -27,7 +27,7 @@ const TypeTransactionForm = ({ typeTransactions }) => {
 
     const handleEdit = (e, row) => {
 
-        setEntityObject('user', row.original.id, 'edit');
+        setEntityObject('TypeTransaction', row.original.id, 'edit');
     };
 
     const handleNew = () => {

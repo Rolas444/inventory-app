@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 
 const PageProducts = async () => {
-  var users =[]
+  var products =[]
   // var roles = []
 
   const result = await getQuery("product");
@@ -20,7 +20,7 @@ const PageProducts = async () => {
   if (result.error) {
     return <div>No se encontraron registros</div>;
   }
-  users = result.data ;
+  products = result.data ;
 
 
   // const columns = userColumns;
@@ -32,7 +32,7 @@ const PageProducts = async () => {
       </div>
       <div className="container py-10">
         <Dialog>
-           <UserForms users={users} />
+           <UserForms products={products} />
         </Dialog>
       </div>
     </>

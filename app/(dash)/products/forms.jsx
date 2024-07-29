@@ -20,9 +20,14 @@ import FrmRegister from "@/components/frms/frm-register";
 import DataTable from "@/components/table/data-table";
 import { EllipsisVertical } from "lucide-react";
 import { userColumns } from "./columns";
+import { auth } from "@/auth";
+import { useEffect, useState } from "react";
 
-const ProductForms = ({ users }) => {
+const ProductForms = ({ products }) => {
+
+    const [isAdmim, setIsAdmin] = useState(false);
     const { entityName, entityId, action } = useInventoryStore()
+
     const { setEntityObject } = useInventoryStore();
 
     const handleEdit = (e, row) => {
@@ -35,8 +40,19 @@ const ProductForms = ({ users }) => {
 
     }
 
-    const btnNew =()=> <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger>
+    const getAuth = async ()=>{
+        const datatSession = await auth();
+        const Level = await AuthLevel(datatSession?.user.roleId);
+        if (Level === 'admin') {
+            setIsAdmin(true);
+        }
 
+    }
+
+    const btnNew =()=> {
+
+    return isAdmim? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger>: <></>
+}
     const columns = [...userColumns,
     {
         id: "actions",
@@ -65,8 +81,12 @@ const ProductForms = ({ users }) => {
     },
     ];
 
+    useEffect(()=>{
+        getAuth()
+    },[])
+
     return (<>
-        <DataTable columns={columns} data={users} btnNew={btnNew} />
+        <DataTable columns={columns} data={products} btnNew={btnNew} />
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
                 <DialogTitle>{action === 'edit' ? 'Editar Producto' : 'Nuevo Producto'}</DialogTitle>

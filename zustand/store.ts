@@ -6,6 +6,8 @@ interface inventoryState {
     entityId: string | null;
     action: string;
     setEntityObject: (entityName: string, entityId: string | null, action: string) => void;
+    session: any ;
+    setSession: (session: any) => void;
 }
 
 export const useInventoryStore = create<inventoryState>()(
@@ -15,6 +17,8 @@ export const useInventoryStore = create<inventoryState>()(
             entityId: null,
             action: '',
             setEntityObject: (entityName, entityId, action ) => set({entityName, entityId , action}),
+            session: null,
+            setSession: (session) => set({session})
         })
     )
 );

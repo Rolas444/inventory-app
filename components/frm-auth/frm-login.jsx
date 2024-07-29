@@ -36,7 +36,7 @@ const FrmLogin = () => {
         // fnLogin(data)
         const resultLogin = await LoginAction(data);
         if (resultLogin.success) {
-            route.push('/dashboard');
+            route.push('/');
         }
         else {
 

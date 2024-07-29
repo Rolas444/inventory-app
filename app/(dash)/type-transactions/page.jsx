@@ -15,7 +15,7 @@ const TypeTransactionPage = async () => {
   var typeTransactions =[]
   // var roles = []
 
-  const result = await getQuery("type-transaction");
+  const result = await getQuery("TypeTransaction");
   // console.log(result);  TypeTransaction
   if (result.error) {
     return <div>No se encontraron registros</div>;

@@ -60,7 +60,7 @@ const DataTable = ({ columns, data = [], btnNew }) => {
       <div className="w-full">
         <div className="flex items-center py-4 justify-between">
           <Input
-            placeholder="Filter emails..."
+            placeholder="Buscar..."
             value={(table.getColumn("email")?.getFilterValue()) ?? ""}
             onChange={(event) =>
               table.getColumn("email")?.setFilterValue(event.target.value)

@@ -42,6 +42,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import MainNav from "@/components/navs/nav-main";
 import MobileNav from "@/components/navs/nav-mobil";
 import { AuthLevel } from "@/actions/auth-actions";
+import  GetSession from "@/components/auth/get-session";
 
 async function LayoutDash({
   children,
@@ -81,14 +82,14 @@ async function LayoutDash({
             icon: <Package className="h-4 w-4" />,
             href: "/products",
           },
-          {
-            title: "Movimientos",
-            icon: <PackageMinus className="h-4 w-4" />,
-            href: "/transactions",
-          },
+          // {
+          //   title: "Movimientos",
+          //   icon: <ArrowLeftRight className="h-4 w-4" />,
+          //   href: "/transactions",
+          // },
           {
             title: "Tipos de Movimiento",
-            icon: <ArrowLeftRight className="h-4 w-4" />,
+            icon: <PackageMinus className="h-4 w-4" />,
             href: "/type-transactions",
           },
           {
@@ -105,6 +106,7 @@ async function LayoutDash({
 
   return (
     <>
+    <GetSession datasession={session} />
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full max-h-screen flex-col gap-2">
