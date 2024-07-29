@@ -5,20 +5,20 @@ export const userColumns = [
       accessorKey: "name",
     },
     {
-      header: "Celular",
-      accessorKey: "phone",
+      header: "Descripción",
+      accessorKey: "description",
     },
     {
-      header: "correo",
-      accessorKey: "email",
+      header: "Tienda",
+      accessorKey: "platform",
     },
     {
       header: "Estado",
       accessorKey: "status",
     },
     {
-      header: "Rol",
-      accessorKey: "role.name",
+      header: "Visible en Tabla",
+      accessorKey: "visible",
     }
   ];
   

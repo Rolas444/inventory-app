@@ -1,0 +1,3 @@
+const FrmTypeTransactions = ({ typeTransactions, onChange }) => {
+    
+}

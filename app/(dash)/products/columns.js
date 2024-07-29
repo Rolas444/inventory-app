@@ -1,4 +1,4 @@
-'use clients'
+'use client'
 export const userColumns = [
     {
       header: "Nombre",
