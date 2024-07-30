@@ -22,11 +22,12 @@ import { EllipsisVertical } from "lucide-react";
 import { userColumns } from "./columns";
 import { auth } from "@/auth";
 import { useEffect, useState } from "react";
+import { AuthLevel } from "@/actions/auth-actions";
 
 const ProductForms = ({ products }) => {
 
     const [isAdmim, setIsAdmin] = useState(false);
-    const { entityName, entityId, action } = useInventoryStore()
+    const { entityName, entityId, action, session } = useInventoryStore()
 
     const { setEntityObject } = useInventoryStore();
 
@@ -41,9 +42,9 @@ const ProductForms = ({ products }) => {
     }
 
     const getAuth = async ()=>{
-        const datatSession = await auth();
-        const Level = await AuthLevel(datatSession?.user.roleId);
-        if (Level === 'admin') {
+        // const datatSession = 
+        const Level = await AuthLevel(session?.user.roleId);
+        if (Level.name === 'admin') {
             setIsAdmin(true);
         }
 

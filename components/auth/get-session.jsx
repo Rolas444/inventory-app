@@ -1,4 +1,5 @@
-import useInventoryStore from '@/zustand/stores'
+"use client"
+import {useInventoryStore} from '@/zustand/store'
 import { useEffect } from 'react'
 
 const GetSession =({dataSession})=>{
