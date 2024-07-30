@@ -62,7 +62,8 @@ model Product {
   id               String            @id @default(uuid())
   sku              String            @unique
   name             String
-  price            Float
+  price            Decimal
+  cost             Decimal
   status           Boolean           @default(true)
   stock            Int
   image            String

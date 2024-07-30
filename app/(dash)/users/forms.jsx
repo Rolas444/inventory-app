@@ -81,7 +81,7 @@ const UserForms = ({ users }) => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegister stateForm={action}  />
+                    <Frm stateForm={action}  />
                 </div>
             </div>
 

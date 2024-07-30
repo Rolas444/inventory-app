@@ -23,6 +23,7 @@ import { userColumns } from "./columns";
 import { auth } from "@/auth";
 import { useEffect, useState } from "react";
 import { AuthLevel } from "@/actions/auth-actions";
+import FrmRegisterProducts from "@/components/frms/frm-register-products";
 
 const ProductForms = ({ products }) => {
 
@@ -97,7 +98,7 @@ const ProductForms = ({ products }) => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegister stateForm={action}  />
+                    <FrmRegisterProducts stateForm={action}  />
                 </div>
             </div>
 
