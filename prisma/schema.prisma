@@ -63,6 +63,7 @@ model Product {
   sku              String            @unique
   name             String
   price            Decimal
+  wholesale        Decimal
   cost             Decimal
   status           Boolean           @default(true)
   stock            Int

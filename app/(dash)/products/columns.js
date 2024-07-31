@@ -1,5 +1,5 @@
 'use client'
-export const userColumns = [
+export const productColumns = [
     {
       header: "Nombre",
       accessorKey: "name",
@@ -19,6 +19,14 @@ export const userColumns = [
     {
       header: "Precio",
       accessorKey: "precio",
+    },
+    {
+      header: "Costo",
+      accessorKey: "cost",
+    },
+    {
+      header: "P x Mayor",
+      accessorKey: "wholesale",
     },
     {
         header: "imagen",

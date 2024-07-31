@@ -16,18 +16,16 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import FrmRegister from "@/components/frms/frm-register";
 import DataTable from "@/components/table/data-table";
 import { EllipsisVertical } from "lucide-react";
-import { userColumns } from "./columns";
-import { auth } from "@/auth";
+import { productColumns } from "./columns";
 import { useEffect, useState } from "react";
 import { AuthLevel } from "@/actions/auth-actions";
 import FrmRegisterProducts from "@/components/frms/frm-register-products";
 
 const ProductForms = ({ products }) => {
 
-    const [isAdmim, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const { entityName, entityId, action, session } = useInventoryStore()
 
     const { setEntityObject } = useInventoryStore();
@@ -42,7 +40,7 @@ const ProductForms = ({ products }) => {
 
     }
 
-    const getAuth = async ()=>{
+    const getAuth = async () => {
         // const datatSession = 
         const Level = await AuthLevel(session?.user.roleId);
         const objLevel = JSON.parse(Level);
@@ -52,11 +50,14 @@ const ProductForms = ({ products }) => {
 
     }
 
-    const btnNew =()=> {
+    const btnNew = () => {
+        return isAdmin ? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger> : <></>
+    }
 
-    return isAdmim? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger>: <></>
-}
-    const columns = [...userColumns,
+    const authColumns =()=> isAdmin ? productColumns :  productColumns.filter(col=>col.accessorKey !== 'wholesale')
+
+
+    const columns = [...authColumns(),
     {
         id: "actions",
         cell: ({ row }) => {
@@ -84,9 +85,9 @@ const ProductForms = ({ products }) => {
     },
     ];
 
-    useEffect(()=>{
+    useEffect(() => {
         getAuth()
-    },[])
+    }, [session])
 
     return (<>
         <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
@@ -99,7 +100,7 @@ const ProductForms = ({ products }) => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegisterProducts stateForm={action}  />
+                    <FrmRegisterProducts stateForm={action} />
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Controller } from 'react-hook-form'
+import { Input } from './input'
 
 const InputControlled = ({ name, control,label, rules = {}, type = 'text', className = '', placeholder='' }) => {
     return (
@@ -13,7 +14,7 @@ const InputControlled = ({ name, control,label, rules = {}, type = 'text', class
                         
                             <label className='text-sm' htmlFor={name}>{label}</label>
                         
-                        <input
+                        <Input
                             {...field}
                             type={type}
                             placeholder={placeholder}
