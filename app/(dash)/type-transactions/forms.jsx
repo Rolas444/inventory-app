@@ -74,7 +74,7 @@ const TypeTransactionForm = ({ typeTransactions }) => {
         <DataTable columns={columns} data={typeTransactions} btnNew={btnNew} />
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-                <DialogTitle>{action === 'edit' ? 'Editar Usuario' : 'Nuevo Usuario'}</DialogTitle>
+                <DialogTitle>{action === 'edit' ? 'Editar Movimiento' : 'Nuevo Movimiento'}</DialogTitle>
                 <DialogDescription>
 
                 </DialogDescription>

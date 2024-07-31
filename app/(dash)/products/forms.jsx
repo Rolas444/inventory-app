@@ -45,7 +45,8 @@ const ProductForms = ({ products }) => {
     const getAuth = async ()=>{
         // const datatSession = 
         const Level = await AuthLevel(session?.user.roleId);
-        if (Level.name === 'admin') {
+        const objLevel = JSON.parse(Level);
+        if (objLevel.name === 'admin') {
             setIsAdmin(true);
         }
 
@@ -88,7 +89,7 @@ const ProductForms = ({ products }) => {
     },[])
 
     return (<>
-        <DataTable columns={columns} data={products} btnNew={btnNew} />
+        <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
                 <DialogTitle>{action === 'edit' ? 'Editar Producto' : 'Nuevo Producto'}</DialogTitle>

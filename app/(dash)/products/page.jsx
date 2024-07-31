@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import ProductForms from "./forms";
 
 const PageProducts = async () => {
   var products =[]
@@ -20,7 +21,7 @@ const PageProducts = async () => {
   if (result.error) {
     return <div>No se encontraron registros</div>;
   }
-  products = result.data ;
+  products = JSON.stringify(result.data) ;
 
 
   // const columns = userColumns;
@@ -32,7 +33,7 @@ const PageProducts = async () => {
       </div>
       <div className="container py-10">
         <Dialog>
-           <UserForms products={products} />
+           <ProductForms products={products} />
         </Dialog>
       </div>
     </>

@@ -62,8 +62,8 @@ export const RegisterAction = async (data) => {
       },
     });
     console.log(result);
-    if(result.data)
-    return { success: true };
+    // if(result.data)
+    return { success: true, data: result};
 
   } catch (error) {
     if (error instanceof AuthError) {
@@ -82,8 +82,9 @@ export const AuthLevel = async (idRole) => {
         id: idRole,
       },
     });
-    return role;
+    return JSON.stringify(role);
   } catch (e) {
-    return { error: e };
+    const objError= { error: e };
+    return JSON.stringify(objError);
   }
 };

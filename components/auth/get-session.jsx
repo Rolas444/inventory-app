@@ -6,12 +6,18 @@ const GetSession =({dataSession})=>{
     const {session, setSession} = useInventoryStore()
 
     const validSession = (data)=>{
-        if(session === null){
-            setSession(data)
+        
+        if(data){
+            const  objSession= JSON.parse(data)
+            if(session === null){
+                setSession(objSession)
+            }
         }
+        
     }
 
     useEffect(()=>{
+
         validSession(dataSession)
     },[dataSession])
     

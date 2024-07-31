@@ -50,15 +50,17 @@ async function LayoutDash({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  const Level: any = await AuthLevel(session?.user.roleId);
+  const Level: string = await AuthLevel(session?.user.roleId);
+  const objLevel = JSON.parse(Level);
+  const stringSession: string = JSON.stringify(session);
   console.log(Level);
-  if (Level.error || !Level) {
-    console.log(Level.error);
+  if (objLevel.error || !Level) {
+    console.log(objLevel.error);
     return <div>Acceso denegado</div>;
   }
 
   const menuList =
-    Level.name !== "admin"
+  objLevel.name !== "admin"
       ? [
           {
             title: "Products",
@@ -106,7 +108,7 @@ async function LayoutDash({
 
   return (
     <>
-    <GetSession dataSession={session} />
+    <GetSession dataSession={stringSession} />
       <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
         <div className="hidden border-r bg-muted/40 md:block">
           <div className="flex h-full max-h-screen flex-col gap-2">

@@ -28,7 +28,7 @@ const TypeTransactionPage = async () => {
   return (
     <>
       <div className="flex items-center">
-        <h1 className="text-lg font-semibold md:text-2xl">Usuarios</h1>
+        <h1 className="text-lg font-semibold md:text-2xl">{`Tipos de Movimientos (transacciones)`}</h1>
       </div>
       <div className="container py-10">
         <Dialog>
