@@ -73,7 +73,7 @@ const FrmRegister = ({stateForm}) => {
                         <InputControlled name="password" type="password" control={control} label="Contraseña" rules={{ required: true }} />
                     </div>
                     <div>
-                        <InputControlled name='phone' control={control} label='Celular' rules={{ required: true }} />
+                        <InputControlled name='phone' control={control} label='Celular' rules={{ required: false }} />
                         {/* <AutocompleteControlled name='roleId' control={control} label='Rol' options={roles} /> */}
                         {/* <ComboboxControlled name='roleId' control={control} label='Rol' options={roles} /> */}
                         <SelectControlled name='roleId' control={control} label='Rol' options={roles} />

@@ -58,16 +58,16 @@ const DataTable = ({ columns, data = [], btnNew }) => {
   return (
     <>
       <div className="w-full">
-        <div className="flex items-center py-4 justify-between">
+        <div className="w-full flex items-center py-3 justify-between gap-2">
           <Input
             placeholder="Buscar..."
             value={(table.getColumn("email")?.getFilterValue()) ?? ""}
             onChange={(event) =>
               table.getColumn("email")?.setFilterValue(event.target.value)
             }
-            className="max-w-sm m-2"
+            className="max-w-sm m-2 w-full"
           />
-          <div className="">
+          <div className="w-full flex justify-end  p-2">
           {btnNew && btnNew()}
             
           </div>

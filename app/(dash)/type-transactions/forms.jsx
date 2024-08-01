@@ -16,7 +16,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import FrmRegister from "@/components/frms/frm-register";
+import FrmTypeTransactions from "@/components/frms/frm-type-transactions";
 import DataTable from "@/components/table/data-table";
 import { EllipsisVertical } from "lucide-react";
 import { userColumns } from "./columns";
@@ -81,7 +81,7 @@ const TypeTransactionForm = ({ typeTransactions }) => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegister stateForm={action}  />
+                    <FrmTypeTransactions stateForm={action}  />
                 </div>
             </div>
 
