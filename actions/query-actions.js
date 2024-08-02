@@ -56,12 +56,15 @@ export const getQuery = async (enityName, param = null) => {
 };
 
 export const createQuery = async (enityName, data) => {
+  console.log(data)
   try {
     const result = await prisma[enityName].create({ data });
-    return { success: true, data: result };
+    const objresult = { success: true, data: result };
+    return JSON.stringify(objresult);
   } catch (e) {
     console.log(e);
-    return { error: e };
+    const objError= { error: e };
+    return JSON.stringify(objError);
   }
 };
 

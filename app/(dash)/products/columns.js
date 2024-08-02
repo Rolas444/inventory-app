@@ -18,7 +18,7 @@ export const productColumns = [
     },
     {
       header: "Precio",
-      accessorKey: "precio",
+      accessorKey: "price",
     },
     {
       header: "Costo",

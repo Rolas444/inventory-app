@@ -9,7 +9,7 @@ const CheckboxControlled = ({ name, label, control, rules = {}, errors }) => {
             control={control}
             render={({ field }) => (
                 <div className="w-full py-2 flex gap-2">
-                    <Checkbox {...field}  />
+                    <Checkbox {...field} checked={field.value} onCheckedChange={(chkd)=>field.onChange(chkd)} />
                     <label htmlFor={name} className="label-text-alt">{label}</label>
                 </div>
             )}

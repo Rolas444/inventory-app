@@ -67,8 +67,8 @@ model Product {
   cost             Decimal
   status           Boolean           @default(true)
   stock            Int
-  image            String
-  description      String
+  image            String?
+  description      String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   platformProducts PlatformProduct[]
@@ -79,7 +79,7 @@ model TypeTransaction {
   name             String            @unique
   description      String
   platform         Boolean
-  Status           Boolean           @default(true)
+  status           Boolean           @default(true)
   visible          Boolean
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
