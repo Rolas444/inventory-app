@@ -20,10 +20,25 @@ import FrmRegister from "@/components/frms/frm-register";
 import DataTable from "@/components/table/data-table";
 import { EllipsisVertical } from "lucide-react";
 import { userColumns } from "./columns";
+import { useEffect, useState } from "react";
+import { getQuery } from "@/actions/query-actions";
 
 const UserForms = ({ users }) => {
     const { entityName, entityId, action } = useInventoryStore()
     const { setEntityObject } = useInventoryStore();
+    const [currentData, setCurrentData] = useState({});
+
+    const fnGetUser = async (id) => {
+        const result = await getQuery("user", {where: {id: id}});
+        if (result.error) {
+            toast.error('Error al obtener usuario');
+        }
+        if(result.success){
+            console.log(result);
+            setCurrentData(result.data[0]);
+        }
+        
+    }
 
     const handleEdit = (e, row) => {
 
@@ -70,6 +85,12 @@ const UserForms = ({ users }) => {
     },
     ];
 
+    useEffect(()=>{
+        if(action === 'edit' && entityId){
+            fnGetUser(entityId);
+        }
+    },[action, entityId])
+
     return (<>
         <DataTable columns={columns} data={users} btnNew={btnNew} />
         <DialogContent className="sm:max-w-[425px]">
@@ -81,7 +102,7 @@ const UserForms = ({ users }) => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegister stateForm={action}  />
+                    <FrmRegister stateForm={action} currentData={currentData} />
                 </div>
             </div>
 

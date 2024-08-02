@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const createOPtions = (options: any[], keyProp: string, descProp: string ) => {
+export const createOptions = (options: any[], keyProp: string, descProp: string ) => {
   return options.map((option) => {
     return {
       value: option[keyProp],

@@ -10,9 +10,9 @@ import SelectControlled from "@/components/ui/select-controlled";
 import CheckboxControlled from "@/components/ui/checkbox-controlled";
 import { useEffect, useState } from "react";
 import { getQuery } from "@/actions/query-actions";
-import { createOPtions } from "@/lib/utils";
+import { createOptions } from "@/lib/utils";
 
-const FrmRegister = ({stateForm}) => {
+const FrmRegister = ({stateForm, currentData}) => {
 
     const [initForm, setInitForm] = useState({
         name: '',
@@ -22,10 +22,11 @@ const FrmRegister = ({stateForm}) => {
         roleId: '',
         status: false
     });
-    const { control, handleSubmit,watch } = useForm(
-        { defaultValues: initForm }
+    const { control, handleSubmit,watch, reset } = useForm(
+        { defaultValues: stateForm==='edit'? currentData : initForm }
     );
     const [roles, setRoles] = useState([]);
+
 
 
     const onSubmit = async () => {
@@ -54,7 +55,7 @@ const FrmRegister = ({stateForm}) => {
         }
 
 
-        setRoles(createOPtions(result.data, 'id', 'name'));
+        setRoles(createOptions(result.data, 'id', 'name'));
     }
 
     // console.log(watch())
@@ -62,6 +63,12 @@ const FrmRegister = ({stateForm}) => {
     useEffect(()=>{
         getRoles();
     },[])
+
+    useEffect(()=>{
+        if(stateForm==='edit ' && currentData.length>0){
+            reset(currentData);
+        }
+    },[currentData])
 
     return (<>
         <div>

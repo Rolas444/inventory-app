@@ -11,7 +11,7 @@ import { Controller } from "react-hook-form";
 
 const SelectControlled = ({ name,label, control, options, placeholder='' }) => {
 
-
+    console.log(options);
     return (<>
         <Controller
             name={name}
@@ -23,7 +23,7 @@ const SelectControlled = ({ name,label, control, options, placeholder='' }) => {
                         </div>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger>
-                        <SelectValue>{field.value? options.find(item=>item.value==field.value).label: placeholder}</SelectValue>
+                        <SelectValue>{field.value? options.find(item=>item.value==field.value)?.label: placeholder}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
