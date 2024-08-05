@@ -53,9 +53,9 @@ async function LayoutDash({
   const Level: string = await AuthLevel(session?.user.roleId);
   const objLevel = JSON.parse(Level);
   const stringSession: string = JSON.stringify(session);
-  console.log(Level);
+  // console.log(Level);
   if (objLevel.error || !Level) {
-    console.log(objLevel.error);
+    // console.log(objLevel.error);
     return <div>Acceso denegado</div>;
   }
 

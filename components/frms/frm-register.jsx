@@ -62,6 +62,9 @@ const FrmRegister = ({stateForm, currentData}) => {
 
     useEffect(()=>{
         getRoles();
+        if(stateForm==='edit ' && currentData.length>0){
+            reset(currentData);
+        }
     },[])
 
     useEffect(()=>{

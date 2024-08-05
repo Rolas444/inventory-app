@@ -18,15 +18,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import FrmRegister from "@/components/frms/frm-register";
 import DataTable from "@/components/table/data-table";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, Loader } from "lucide-react";
 import { userColumns } from "./columns";
 import { useEffect, useState } from "react";
 import { getQuery } from "@/actions/query-actions";
+import { AiOutlineLoading } from "react-icons/ai";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const UserForms = ({ users }) => {
     const { entityName, entityId, action } = useInventoryStore()
     const { setEntityObject } = useInventoryStore();
     const [currentData, setCurrentData] = useState({});
+    const [loading, setLoading] = useState(false);
 
     const fnGetUser = async (id) => {
         const result = await getQuery("user", {where: {id: id}});
@@ -40,12 +43,14 @@ const UserForms = ({ users }) => {
         
     }
 
-    const handleEdit = (e, row) => {
-
+    const handleEdit = async (row) => {
+        setLoading(true);
+        await fnGetUser(row.original.id);
         setEntityObject('user', row.original.id, 'edit');
+        setLoading(false);
     };
 
-    const handleNew = () => {
+    const handleNew = async () => {
         setEntityObject('user', null, 'new');
 
     }
@@ -67,7 +72,7 @@ const UserForms = ({ users }) => {
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuItem>
                             <DialogTrigger
-                                onClick={(e) => handleEdit(e, row)}
+                                onClick={async () =>await handleEdit( row)}
                                 className="cursor-pointer"
                             >
                                 Editar
@@ -85,11 +90,11 @@ const UserForms = ({ users }) => {
     },
     ];
 
-    useEffect(()=>{
-        if(action === 'edit' && entityId){
-            fnGetUser(entityId);
-        }
-    },[action, entityId])
+    // useEffect(()=>{
+    //     if(action === 'edit' && entityId){
+    //         fnGetUser(entityId);
+    //     }
+    // },[entityId])
 
     return (<>
         <DataTable columns={columns} data={users} btnNew={btnNew} />
@@ -102,7 +107,7 @@ const UserForms = ({ users }) => {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegister stateForm={action} currentData={currentData} />
+                    { !loading ? <FrmRegister stateForm={action} currentData={currentData} />: <Loader  className="mr-2 h-4 w-4 animate-spin" />}
                 </div>
             </div>
 
