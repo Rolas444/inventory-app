@@ -20,14 +20,34 @@ import FrmTypeTransactions from "@/components/frms/frm-type-transactions";
 import DataTable from "@/components/table/data-table";
 import { EllipsisVertical } from "lucide-react";
 import { userColumns } from "./columns";
+import { useState } from "react";
+import { getQuery } from "@/actions/query-actions";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const TypeTransactionForm = ({ typeTransactions }) => {
+    const [loading, setLoading] = useState(false);
     const { entityName, entityId, action } = useInventoryStore()
+    const [currentData, setCurrentData] = useState({});
     const { setEntityObject } = useInventoryStore();
 
-    const handleEdit = (e, row) => {
 
+    const fnGetTransaction = async (id) => {
+        const result = await getQuery("TypeTransaction", {where: {id: id}});
+        if (result.error) {
+            toast.error('Error al obtener usuario');
+        }
+        if(result.success){
+            console.log(result);
+            setCurrentData(result.data[0]);
+        }
+        
+    }
+
+    const handleEdit = async (e, row) => {
+        setLoading(true);
+        await fnGetTransaction(row.original.id);
         setEntityObject('TypeTransaction', row.original.id, 'edit');
+        setLoading(false);
     };
 
     const handleNew = () => {
@@ -80,8 +100,9 @@ const TypeTransactionForm = ({ typeTransactions }) => {
                 </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmTypeTransactions stateForm={action}  />
+                <div className="grid  gap-4">
+                    {!loading ? <FrmTypeTransactions stateForm={action} currentData={currentData} />
+                    : <div className="w-full flex justify-center"><AiOutlineLoading  className="mr-2 h-10 w-10 animate-spin" /></div>}
                 </div>
             </div>
 

@@ -3,12 +3,13 @@ import { useForm } from "react-hook-form";
 import InputControlled from "../ui/input-controlled";
 import { Check } from "lucide-react";
 import CheckboxControlled from "../ui/checkbox-controlled";
-import { createQuery } from "@/actions/query-actions";
+import { createQuery, updateQuery } from "@/actions/query-actions";
 import { toast } from "sonner";
 import { platform } from "os";
 import { useRouter } from "next/navigation";
+import { updateDataForm } from "@/lib/tools";
 
-const FrmTypeTransactions = ({ stateForm }) => {
+const FrmTypeTransactions = ({ stateForm , currentData }) => {
 
     const router = useRouter();
 
@@ -21,8 +22,10 @@ const FrmTypeTransactions = ({ stateForm }) => {
         visible: false
     });
 
+    const dataForm  = stateForm==='edit'? updateDataForm(initForm, currentData, 'id') : initForm;
+
     const { control, handleSubmit, watch } = useForm(
-        { defaultValues: initForm }
+        { defaultValues: stateForm==='edit'? dataForm:initForm }
     );
 
     const onSubmit = async () => {
@@ -34,6 +37,12 @@ const FrmTypeTransactions = ({ stateForm }) => {
             let sresult = await createQuery('TypeTransaction', {...watch()});
             result = JSON.parse(sresult);
             console.log(result);
+        }
+        
+        if(stateForm ==='edit'){
+            const formData = {...watch()};
+
+            result = await updateQuery('TypeTransaction', {id: formData.id},  formData);
         }
         if(result.error){
             console.log(result)

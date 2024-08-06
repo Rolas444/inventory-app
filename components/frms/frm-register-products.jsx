@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import InputControlled from "@/components/ui/input-controlled";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { createQuery } from "@/actions/query-actions";
+import { createQuery, updateQuery } from "@/actions/query-actions";
+import { updateDataForm } from "@/lib/tools";
 
-const FrmRegisterProducts = ({ stateForm }) => {
+const FrmRegisterProducts = ({ stateForm, currentData }) => {
+    const [modalLoading, setModalLoading] = useState(false);
 
     const router = useRouter()
     const [initForm, setInitForm] = useState({
@@ -20,11 +22,14 @@ const FrmRegisterProducts = ({ stateForm }) => {
         image: ''
     });
 
+    const dataForm = stateForm === 'edit' ? currentData : initForm;
+
     const { control, handleSubmit,watch } = useForm(
-        { defaultValues: initForm }
+        { defaultValues: stateForm==='edit'? updateDataForm(initForm, dataForm, 'id'): initForm }
     );
 
     const onSubmit = async () => {
+        setModalLoading(true);
         var result = {}
         toast.info('Registrando Tipo de movimiento');
         console.log(watch());
@@ -39,6 +44,13 @@ const FrmRegisterProducts = ({ stateForm }) => {
             result = JSON.parse(sresult);
             console.log(result);
         }
+
+        if(stateForm ==='edit'){
+            const formData = {...watch()};
+
+            result = await updateQuery('Product', {id: formData.id},  formData);
+        }
+
         if(result.error){
             console.log(result)
            toast.error(result.error);
@@ -48,6 +60,7 @@ const FrmRegisterProducts = ({ stateForm }) => {
             router.refresh();
         }
         
+        setModalLoading(false);
     }
 
     return (<>
@@ -67,7 +80,7 @@ const FrmRegisterProducts = ({ stateForm }) => {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="btn btn-primary">Guardar</button>
+                    <button type="submit" className="btn btn-primary" disabled={setModalLoading}>Guardar</button>
                 </div>
             </form>
         </div>

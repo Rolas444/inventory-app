@@ -98,7 +98,7 @@ const UserForms = ({ users }) => {
 
     return (<>
         <DataTable columns={columns} data={users} btnNew={btnNew} />
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="">
             <DialogHeader>
                 <DialogTitle>{action === 'edit' ? 'Editar Usuario' : 'Nuevo Usuario'}</DialogTitle>
                 <DialogDescription>
@@ -106,8 +106,8 @@ const UserForms = ({ users }) => {
                 </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                    { !loading ? <FrmRegister stateForm={action} currentData={currentData} />: <Loader  className="mr-2 h-4 w-4 animate-spin" />}
+                <div className="grid items-center gap-4">
+                    { !loading ? <FrmRegister stateForm={action} currentData={currentData} />: <div className="w-full flex justify-center"><AiOutlineLoading  className="mr-2 h-10 w-10 animate-spin" /></div>}
                 </div>
             </div>
 

@@ -34,7 +34,7 @@ const PageUsers = async () => {
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">Usuarios</h1>
       </div>
-      <div className="container py-10">
+      <div className="container ">
         <Dialog>
            <UserForms users={users} />
         </Dialog>

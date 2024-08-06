@@ -22,22 +22,40 @@ import { productColumns } from "./columns";
 import { useEffect, useState } from "react";
 import { AuthLevel } from "@/actions/auth-actions";
 import FrmRegisterProducts from "@/components/frms/frm-register-products";
+import { AiOutlineLoading } from "react-icons/ai";
+import { getQuery } from "@/actions/query-actions";
 
 const ProductForms = ({ products }) => {
 
+    const [loading, setLoading] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const { entityName, entityId, action, session } = useInventoryStore()
+    const [currentData, setCurrentData] = useState({});
 
     const { setEntityObject } = useInventoryStore();
 
-    const handleEdit = (e, row) => {
-
-        setEntityObject('user', row.original.id, 'edit');
+    const handleEdit = async (e, row) => {
+        setLoading(true);
+        await fnGetProduct(row.original.id);
+        setEntityObject('Product', row.original.id, 'edit');
+        setLoading(false);
     };
 
     const handleNew = () => {
-        setEntityObject('user', null, 'new');
+        setEntityObject('Product', null, 'new');
 
+    }
+
+    const fnGetProduct = async (id) => {
+        const result = await getQuery("Product", {where: {id: id}});
+        if (result.error) {
+            toast.error('Error al obtener Producto');
+        }
+        if(result.success){
+            console.log(result);
+            setCurrentData(result.data[0]);
+        }
+        
     }
 
     const getAuth = async () => {
@@ -91,7 +109,7 @@ const ProductForms = ({ products }) => {
 
     return (<>
         <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="w-full">
             <DialogHeader>
                 <DialogTitle>{action === 'edit' ? 'Editar Producto' : 'Nuevo Producto'}</DialogTitle>
                 <DialogDescription>
@@ -99,8 +117,9 @@ const ProductForms = ({ products }) => {
                 </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                    <FrmRegisterProducts stateForm={action} />
+                <div className="grid gap-4">
+                    {!loading ? <FrmRegisterProducts stateForm={action} currentData={currentData} />
+                    : <div className="w-full flex justify-center"><AiOutlineLoading  className="mr-2 h-10 w-10 animate-spin" /></div>}
                 </div>
             </div>
 

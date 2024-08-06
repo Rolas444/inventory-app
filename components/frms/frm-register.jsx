@@ -9,10 +9,15 @@ import { Combo } from "next/font/google";
 import SelectControlled from "@/components/ui/select-controlled";
 import CheckboxControlled from "@/components/ui/checkbox-controlled";
 import { useEffect, useState } from "react";
-import { getQuery } from "@/actions/query-actions";
+import { getQuery, updateQuery } from "@/actions/query-actions";
 import { createOptions } from "@/lib/utils";
+import { updateDataForm } from "@/lib/tools";
+import bcrypt from "bcryptjs";
+import { useRouter } from "next/navigation";
 
 const FrmRegister = ({stateForm, currentData}) => {
+
+    const router = useRouter();
 
     const [initForm, setInitForm] = useState({
         name: '',
@@ -22,8 +27,10 @@ const FrmRegister = ({stateForm, currentData}) => {
         roleId: '',
         status: false
     });
+
+    const dataForm = stateForm==='edit'?  updateDataForm(initForm,currentData, 'id') : initForm;
     const { control, handleSubmit,watch, reset } = useForm(
-        { defaultValues: stateForm==='edit'? currentData : initForm }
+        { defaultValues: stateForm==='edit'?  dataForm: initForm }
     );
     const [roles, setRoles] = useState([]);
 
@@ -31,21 +38,33 @@ const FrmRegister = ({stateForm, currentData}) => {
 
     const onSubmit = async () => {
         var result = {}
-        toast.info('Registrando usuario');
+        // toast.info('Registrando usuario');
         console.log(watch());
         if(stateForm ==='new'){
             result = await RegisterAction({...watch()});
             console.log(result);
         }
-        
+
+        if(stateForm ==='edit'){
+            const formData = {...watch()};
+            if(formData.password!==currentData.password){
+                formData.password = await bcrypt.hash(formData.password, 10);
+            }
+
+            result = await updateQuery('user', {id: formData.id},  formData);
+        }
+
         
         if(result.error){
             console.log(result)
            toast.error(result.error);
         }
+
         if(result.success){
-            toast.success('Usuario registrado');
+            toast.success('Registro satisfactorio');
         }
+
+        router.refresh();
     }
 
     const getRoles = async () => {
@@ -62,16 +81,14 @@ const FrmRegister = ({stateForm, currentData}) => {
 
     useEffect(()=>{
         getRoles();
-        if(stateForm==='edit ' && currentData.length>0){
-            reset(currentData);
-        }
+        
     },[])
 
-    useEffect(()=>{
-        if(stateForm==='edit ' && currentData.length>0){
-            reset(currentData);
-        }
-    },[currentData])
+    // useEffect(()=>{
+    //     if(stateForm==='edit ' && currentData.length>0){
+    //         reset(dataForm);
+    //     }
+    // },[currentData])
 
     return (<>
         <div>
