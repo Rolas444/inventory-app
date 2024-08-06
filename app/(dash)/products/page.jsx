@@ -16,7 +16,11 @@ const PageProducts = async () => {
   var products =[]
   // var roles = []
 
-  const result = await getQuery("product");
+  const result = await getQuery("product",{
+    include: {
+      platformProducts: true,
+    },
+  });
   // console.log(result);
   if (result.error) {
     return <div>No se encontraron registros</div>;

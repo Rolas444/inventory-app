@@ -9,7 +9,15 @@ import {
 } from "@/components/ui/select"
 import { Controller } from "react-hook-form";
 
-const SelectControlled = ({ name,label, control, options, placeholder='' }) => {
+const SelectControlled = ({ name,label, control, options, placeholder='', onChangeFn=null }) => {
+
+    const handleChange = (e,field) => {
+        // console.log(e)
+        field.onChange(e);
+        if(onChangeFn){
+            onChangeFn(e);
+        }
+    }
 
     console.log(options);
     return (<>
@@ -21,7 +29,7 @@ const SelectControlled = ({ name,label, control, options, placeholder='' }) => {
                         <div className="label">
                             <span>{label}</span>
                         </div>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={(e)=>handleChange(e,field)} defaultValue={field.value}>
                     <SelectTrigger>
                         <SelectValue>{field.value? options.find(item=>item.value==field.value)?.label: placeholder}</SelectValue>
                     </SelectTrigger>

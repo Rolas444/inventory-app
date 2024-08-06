@@ -56,8 +56,11 @@ const ProductForms = ({ products }) => {
         setEntityObject('Product', row.original.id, 'addTransaction');
     }
 
-    const handleAddPlatform = (row) => {
+    const handleAddPlatform = async (row) => {
+        setLoading(true);
+        await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'addPlatform');
+        setLoading(false);
     }
 
     const handleViewHistory = (row) => {
@@ -76,19 +79,19 @@ const ProductForms = ({ products }) => {
 
     }
 
-    const fnGetPlatforms = async (id) => {
+    const fnGetPlatforms = async () => {
         const result = await getQuery('TypeTransaction', {
             where: {
                 platform: true,
                 visible: true
             }
         })
-
+        console.log(result);
         if (result.error) {
             toast.error('Error al obtener plataformas');
         }
         if (result.success) {
-            console.log(result);
+            
             setPlatformColumns(result.data);
         }
     }
@@ -117,9 +120,9 @@ const ProductForms = ({ products }) => {
             case 'edit':
                 return <FrmRegisterProducts stateForm={action} currentData={currentData} />
             case 'addTransaction':
-                return <FrmAddTransaction  />
+                return <FrmAddTransaction stateForm={action} currentData={currentData} />
             case 'addPlatform':
-                return <FrmAddPlatform />
+                return <FrmAddPlatform stateForm={action} currentData={currentData} />
             case 'history':
                 return <ViewHistry />
             default:
@@ -145,6 +148,20 @@ const ProductForms = ({ products }) => {
 
 
     const columns = [...authColumns(),
+    ...platformColumns.map((col)=>{
+        return {
+            header: col.name,
+            // accessor: col.accessor,
+            Cell: ({ row }) => {
+                console.log(col.name)
+                return (
+                    <div className="flex justify-center">
+                        {row.original[col.accessor] ? <View size={24} /> : <></>}
+                    </div>
+                );
+            },
+        }
+    }),
     {
         id: "actions",
         cell: ({ row }) => {
@@ -181,23 +198,24 @@ const ProductForms = ({ products }) => {
                                 Ver historial
                             </DialogTrigger>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        {isAdmin && <DropdownMenuItem>
                             <DialogTrigger
                                 onClick={(e) => handleEdit(e, row)}
                                 className="cursor-pointer"
                             >
                                 Editar
                             </DialogTrigger>
-                        </DropdownMenuItem>
+                        </DropdownMenuItem>}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
         },
-    },
+    }
     ];
 
     useEffect(() => {
         getAuth()
+        fnGetPlatforms()
     }, [session])
 
     return (<>
