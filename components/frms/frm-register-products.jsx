@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createQuery, updateQuery } from "@/actions/query-actions";
 import { updateDataForm } from "@/lib/tools";
+import { CiImageOn } from "react-icons/ci";
 
 const FrmRegisterProducts = ({ stateForm, currentData }) => {
     const [modalLoading, setModalLoading] = useState(false);
@@ -67,7 +68,7 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-full flex justify-between gap-2">
-                    <div>
+                    <div className="w-full">
                         <InputControlled name="name" control={control} label="Nombre" rules={{ required: false }} />
                         <InputControlled name="sku" type="text" control={control} label="SKU" rules={{ required: true }} />
                         <InputControlled name="stock" type="number" control={control} label="stock" rules={{ required: true }} />
@@ -75,12 +76,14 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
                         <InputControlled name="wholesale" type="number" control={control} label="Precio Mayoreo" rules={{ required: true }} />
                         <InputControlled name="cost" type="number" control={control} label="Costo" rules={{ required: true }} />
                     </div>
-                    <div>
-
+                    <div className="w-full">
+                        <div className="w-full flex justify-center">
+                            <CiImageOn  className=" w-full h-auto align-center"/>
+                        </div>
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="btn btn-primary" disabled={setModalLoading}>Guardar</button>
+                    <button type="submit" className="btn btn-primary" disabled={modalLoading}>Guardar</button>
                 </div>
             </form>
         </div>

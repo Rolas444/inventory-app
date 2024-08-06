@@ -17,20 +17,26 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DataTable from "@/components/table/data-table";
-import { EllipsisVertical } from "lucide-react";
+import { EllipsisVertical, View } from "lucide-react";
 import { productColumns } from "./columns";
 import { useEffect, useState } from "react";
 import { AuthLevel } from "@/actions/auth-actions";
 import FrmRegisterProducts from "@/components/frms/frm-register-products";
+import FrmAddTransaction from "@/components/frms/frm-add-transaction";
+import FrmAddPlatform from "@/components/frms/frm-add-platform";
+import ViewHistry from "@/components/frms/view-history";
 import { AiOutlineLoading } from "react-icons/ai";
 import { getQuery } from "@/actions/query-actions";
+import { platform } from "os";
 
 const ProductForms = ({ products }) => {
 
     const [loading, setLoading] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [platformColumns, setPlatformColumns] = useState([]);
     const { entityName, entityId, action, session } = useInventoryStore()
     const [currentData, setCurrentData] = useState({});
+    const [frmAction, setFrmAction] = useState('register');
 
     const { setEntityObject } = useInventoryStore();
 
@@ -46,16 +52,79 @@ const ProductForms = ({ products }) => {
 
     }
 
+    const handleAddTransaction = (row) => {
+        setEntityObject('Product', row.original.id, 'addTransaction');
+    }
+
+    const handleAddPlatform = (row) => {
+        setEntityObject('Product', row.original.id, 'addPlatform');
+    }
+
+    const handleViewHistory = (row) => {
+        setEntityObject('Product', row.original.id, 'history');
+    }
+
     const fnGetProduct = async (id) => {
-        const result = await getQuery("Product", {where: {id: id}});
+        const result = await getQuery("Product", { where: { id: id } });
         if (result.error) {
             toast.error('Error al obtener Producto');
         }
-        if(result.success){
+        if (result.success) {
             console.log(result);
             setCurrentData(result.data[0]);
         }
-        
+
+    }
+
+    const fnGetPlatforms = async (id) => {
+        const result = await getQuery('TypeTransaction', {
+            where: {
+                platform: true,
+                visible: true
+            }
+        })
+
+        if (result.error) {
+            toast.error('Error al obtener plataformas');
+        }
+        if (result.success) {
+            console.log(result);
+            setPlatformColumns(result.data);
+        }
+    }
+
+    const titleForm = () => {
+        switch (action) {
+            case 'new':
+                return 'Registro de Productos'
+            case 'edit':
+                return 'Editar Producto'
+            case 'addTransaction':
+                return 'Registro de Movimientos'
+            case 'addPlatform':
+                return 'Registro de Plataforma'
+            case 'history':
+                return 'Historial de movimientos'
+            default:
+                return 'Registro de Productos'
+        }
+    }
+
+    const managerForm = ()=>{
+        switch (action){
+            case 'new':
+                return <FrmRegisterProducts stateForm={action} currentData={currentData} />
+            case 'edit':
+                return <FrmRegisterProducts stateForm={action} currentData={currentData} />
+            case 'addTransaction':
+                return <FrmAddTransaction  />
+            case 'addPlatform':
+                return <FrmAddPlatform />
+            case 'history':
+                return <ViewHistry />
+            default:
+                return <FrmRegisterProducts stateForm={action} currentData={currentData} />
+        }
     }
 
     const getAuth = async () => {
@@ -72,7 +141,7 @@ const ProductForms = ({ products }) => {
         return isAdmin ? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger> : <></>
     }
 
-    const authColumns =()=> isAdmin ? productColumns :  productColumns.filter(col=>col.accessorKey !== 'wholesale')
+    const authColumns = () => isAdmin ? productColumns : productColumns.filter(col => col.accessorKey !== 'wholesale')
 
 
     const columns = [...authColumns(),
@@ -88,6 +157,30 @@ const ProductForms = ({ products }) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                            <DialogTrigger
+                                onClick={() => handleAddTransaction(row)}
+                                className="cursor-pointer"
+                            >
+                                Registrar movimiento
+                            </DialogTrigger>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <DialogTrigger
+                                onClick={() => handleAddPlatform( row)}
+                                className="cursor-pointer"
+                            >
+                                Agregar plataforma
+                            </DialogTrigger>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <DialogTrigger
+                                onClick={() => handleViewHistory(row)}
+                                className="cursor-pointer"
+                            >
+                                Ver historial
+                            </DialogTrigger>
+                        </DropdownMenuItem>
                         <DropdownMenuItem>
                             <DialogTrigger
                                 onClick={(e) => handleEdit(e, row)}
@@ -111,15 +204,17 @@ const ProductForms = ({ products }) => {
         <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
         <DialogContent className="w-full">
             <DialogHeader>
-                <DialogTitle>{action === 'edit' ? 'Editar Producto' : 'Nuevo Producto'}</DialogTitle>
+                {!loading &&<DialogTitle>{titleForm()}</DialogTitle>}
                 <DialogDescription>
 
                 </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid gap-4">
-                    {!loading ? <FrmRegisterProducts stateForm={action} currentData={currentData} />
-                    : <div className="w-full flex justify-center"><AiOutlineLoading  className="mr-2 h-10 w-10 animate-spin" /></div>}
+                    {!loading ? 
+                    // <FrmRegisterProducts stateForm={action} currentData={currentData} />
+                    managerForm()
+                        : <div className="w-full flex justify-center"><AiOutlineLoading className="mr-2 h-10 w-10 animate-spin" /></div>}
                 </div>
             </div>
 
