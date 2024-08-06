@@ -43,6 +43,7 @@ export const initValues = async () => {
 };
 
 export const getQuery = async (enityName, param = null) => {
+  console.log(param);
   try {
     const result = param
       ? await prisma[enityName].findMany(param)
@@ -51,7 +52,7 @@ export const getQuery = async (enityName, param = null) => {
     return { success: true, data: result };
   } catch (e) {
     console.log(e);
-    return { error: e };
+    return { error: JSON.stringify(e) };
   }
 };
 

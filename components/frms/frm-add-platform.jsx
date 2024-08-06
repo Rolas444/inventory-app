@@ -12,6 +12,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
     const [modalLoading, setModalLoading] = useState(false);
 
     const [platforms, setPlatforms] = useState([])
+    const [actionForm, setActionForm] = useState('new');
     const router = useRouter();
     // console.log(currentData);
     const [initForm, setInitForm] = useState({
@@ -20,7 +21,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
         quantity: '',
         price: '',
     });
-    const { control, handleSubmit, watch } = useForm({
+    const { control, handleSubmit, setValue, watch } = useForm({
         defaultValues: initForm
     })
 
@@ -43,14 +44,30 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
 
     const fnOnChangePlatform = async (idSelected)=>{
         console.log(idSelected);
-        let exists = await getQuery('ProductPlatform', {
+        let exists = await getQuery('PlatformProduct', {
             where: {
-                productId: currentData.id,
-                typeTransactionId: idSelected
+                AND: [
+                    { productId: currentData.id },
+                    { typeTransactionId: idSelected }
+                ]
             }
         })
-
-        console.log(exists);
+        if (exists.error) {
+            toast.error('Error al obtener plataformas');
+        }
+        if (exists.success) {
+            if(exists.data.length>0){
+                setActionForm('edit');
+                setValue('quantity',exists.data[0].quantity)
+                setValue('price',exists.data[0].price)
+                setValue('id', exists.data[0].id)
+            }
+            if(exists.data.length===0){
+                setActionForm('new');
+                setValue('quantity',0)
+                setValue('price',0)
+            }
+        }   
     }
 
     const onSubmit = () => {
