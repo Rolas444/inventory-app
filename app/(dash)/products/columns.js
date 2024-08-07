@@ -1,4 +1,6 @@
 'use client'
+import {CiImageOn} from 'react-icons/ci'
+
 export const productColumns = [
     {
       header: "Nombre",
@@ -31,6 +33,13 @@ export const productColumns = [
     {
         header: "imagen",
         accessorKey: "image",
+        cell: ({ row }) => {
+          return (
+            <div className="flex justify-center">
+              {row.original.image ? <></>:<><CiImageOn  className="text-cyan-800 w-6 h-6 align-center"/></>}
+            </div>
+          );
+        },
     }
   ];
   

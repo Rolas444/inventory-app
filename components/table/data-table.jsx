@@ -81,7 +81,7 @@ const DataTable = ({ columns, data = [], btnNew }) => {
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full overflow-x-auto ">
         <div className="w-full flex items-center py-3 justify-between gap-2">
           <Input
             placeholder="Buscar..."
@@ -98,8 +98,8 @@ const DataTable = ({ columns, data = [], btnNew }) => {
 
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table>
+        <div className="rounded-md border w-full overflow-x-auto">
+          <Table className="w-min-fit">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>

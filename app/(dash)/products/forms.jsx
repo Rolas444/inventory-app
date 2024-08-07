@@ -40,6 +40,8 @@ const ProductForms = ({ products }) => {
 
     const { setEntityObject } = useInventoryStore();
 
+    // console.log(products);
+
     const handleEdit = async (e, row) => {
         setLoading(true);
         await fnGetProduct(row.original.id);
@@ -83,10 +85,11 @@ const ProductForms = ({ products }) => {
         const result = await getQuery('TypeTransaction', {
             where: {
                 platform: true,
-                visible: true
+                visible: true,
+                status: true
             }
         })
-        console.log(result);
+        // console.log(result);
         if (result.error) {
             toast.error('Error al obtener plataformas');
         }
@@ -149,14 +152,16 @@ const ProductForms = ({ products }) => {
 
     const columns = [...authColumns(),
     ...platformColumns.map((col)=>{
+        // console.log(col)
         return {
             header: col.name,
             // accessor: col.accessor,
-            Cell: ({ row }) => {
-                console.log(col.name)
+            cell: ({ row }) => {
+                let index = row.original['platformProducts'].findIndex((item)=>item.typeTransactionId === col.id);
+                // console.log(index)
                 return (
                     <div className="flex justify-center">
-                        {row.original[col.accessor] ? <View size={24} /> : <></>}
+                        {row.original['platformProducts']?.[index] ? row.original['platformProducts']?.[index]?.['quantity'] : <></>}
                     </div>
                 );
             },
@@ -187,7 +192,7 @@ const ProductForms = ({ products }) => {
                                 onClick={() => handleAddPlatform( row)}
                                 className="cursor-pointer"
                             >
-                                Agregar plataforma
+                                Registrar plataforma
                             </DialogTrigger>
                         </DropdownMenuItem>
                         <DropdownMenuItem>

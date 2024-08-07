@@ -52,7 +52,7 @@ export const getQuery = async (enityName, param = null) => {
     return { success: true, data: result };
   } catch (e) {
     console.log(e);
-    return { error: JSON.stringify(e) };
+    return { error: JSON.stringify(e.message) };
   }
 };
 

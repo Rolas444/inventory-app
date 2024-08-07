@@ -1,11 +1,14 @@
 'use client'
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import InputControlled from "../ui/input-controlled";
 import SelectControlled from "../ui/select-controlled";
 import { useRouter } from "next/navigation";
 import { createOptions } from "@/lib/utils";
-import { getQuery } from "@/actions/query-actions";
+import { createQuery, getQuery, updateQuery } from "@/actions/query-actions";
+import { updateDataForm } from "@/lib/tools";
+import { Loader } from "lucide-react";
+import { toast } from "sonner";
 
 const FrmAddPlatform = ({ stateForm, currentData }) => {
 
@@ -16,12 +19,12 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
     const router = useRouter();
     // console.log(currentData);
     const [initForm, setInitForm] = useState({
-        // productId: currentData.id,
+        productId: currentData.id,
         typeTransactionId: '',
         quantity: '',
         price: '',
     });
-    const { control, handleSubmit, setValue, watch } = useForm({
+    const { control, handleSubmit, setValue,reset, watch } = useForm({
         defaultValues: initForm
     })
 
@@ -29,7 +32,8 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
         const result = await getQuery('TypeTransaction', {
             where: {
                 platform: true,
-                visible: true
+                visible: true,
+                status: true
             }
         })
         console.log(result);
@@ -58,25 +62,54 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
         if (exists.success) {
             if(exists.data.length>0){
                 setActionForm('edit');
-                setValue('quantity',exists.data[0].quantity)
-                setValue('price',exists.data[0].price)
-                setValue('id', exists.data[0].id)
+                reset(updateDataForm(initForm, exists.data[0], 'id'));
             }
             if(exists.data.length===0){
                 setActionForm('new');
-                setValue('quantity',0)
-                setValue('price',0)
+                reset(initForm);
+                setValue('typeTransactionId', idSelected);
             }
         }   
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+        console.log('llegamos al submit')
+        setModalLoading(true);
+        const validForm = {...watch()};
+        validForm.quantity = Number(validForm.quantity);
+        validForm.price = Number(validForm.price);
+        var result = {}
+        // toast.info('Registrando usuario');
+        // console.log(watch());
+        if(actionForm ==='new'){
+            let sresult = await createQuery('PlatformProduct',{...validForm});
+            result = JSON.parse(sresult);
+            // console.log(result);
+        }
 
+        if(actionForm ==='edit'){
+            const formData = validForm;
+            result = await updateQuery('PlatformProduct', {id: formData.id},  formData);
+        }
+
+        
+        if(result.error){
+            console.log(result)
+           toast.error(result.error);
+        }
+
+        if(result.success){
+            toast.success('Registro satisfactorio');
+        }
+        setModalLoading(false);
+        router.refresh();
     }
 
     useEffect(()=>{
         fnGetPlatforms()
     },[])
+
+    console.log(watch())
 
     return (<>
         <div>
@@ -90,15 +123,15 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
                 <div className="w-full flex justify-between gap-2">
 
                     <div className="w-full">
-                        <InputControlled name={'qty'} type="number" control={control} label='Cantidad Ofertada' rules={{ required: false }} />
+                        <InputControlled name='quantity' type="number" control={control} label='Cantidad Ofertada' rules={{ required: false }} />
 
                     </div>
                     <div className="w-full">
-                        <InputControlled name='precio' type="number" control={control} label='Precio' rules={{ required: false }} />
+                        <InputControlled name='price' type="number" control={control} label='Precio' rules={{ required: false }} />
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="btn btn-primary" disabled={modalLoading}>Guardar</button>
+                    {modalLoading ? <Loader className="animate-spin w-5 h-5" />:<button type="submit" className="btn btn-primary" >Guardar</button>}
                 </div>
             </form>
         </div>
