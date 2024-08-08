@@ -21,7 +21,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
     const [initForm, setInitForm] = useState({
         productId: currentData.id,
         typeTransactionId: '',
-        quantity: '',
+        initQuantity: '',
         price: '',
     });
     const { control, handleSubmit, setValue,reset, watch } = useForm({
@@ -123,7 +123,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
                 <div className="w-full flex justify-between gap-2">
 
                     <div className="w-full">
-                        <InputControlled name='quantity' type="number" control={control} label='Cantidad Ofertada' rules={{ required: false }} />
+                        <InputControlled name='initQuantity' type="number" control={control} label='Cantidad Ofertada inicial' rules={{ required: false }} />
 
                     </div>
                     <div className="w-full">

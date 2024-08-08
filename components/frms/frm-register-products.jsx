@@ -16,7 +16,7 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
         name: '',
         sku: '',
         status: false,
-        stock: 0,
+        initStock: 0,
         price: 0.00,
         cost: 0.00,
         wholesale: 0.00,
@@ -71,7 +71,7 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
                     <div className="w-full">
                         <InputControlled name="name" control={control} label="Nombre" rules={{ required: false }} />
                         <InputControlled name="sku" type="text" control={control} label="SKU" rules={{ required: true }} />
-                        <InputControlled name="stock" type="number" control={control} label="stock" rules={{ required: true }} />
+                        <InputControlled name="initStock" type="number" control={control} label="stock inicial" rules={{ required: true }} />
                         <InputControlled name="price" type="number" control={control} label="Precio" rules={{ required: true }} />
                         <InputControlled name="wholesale" type="number" control={control} label="Precio Mayoreo" rules={{ required: true }} />
                         <InputControlled name="cost" type="number" control={control} label="Costo" rules={{ required: true }} />
