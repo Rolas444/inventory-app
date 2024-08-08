@@ -66,6 +66,7 @@ model Product {
   wholesale        Decimal
   cost             Decimal
   status           Boolean           @default(true)
+  initStok         Int             @default(0)
   stock            Int
   image            String?
   description      String?
@@ -91,6 +92,7 @@ model PlatformProduct {
   id                String          @id @default(uuid())
   productId         String
   typeTransactionId String
+  initQuantity      Int            @default(0)
   quantity          Int
   price             Decimal
   createdAt         DateTime        @default(now())
