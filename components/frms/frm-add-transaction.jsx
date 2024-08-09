@@ -10,6 +10,13 @@ const FrmAddTransaction = () => {
     const [typeTransactions, setTypeTransactions] = useState([])
     const [tOps, setTOps] = useState([])
     const { control, handleSubmit,watch } = useForm()
+    const [initForm, setInitForm] = useState({
+        date: '',
+        cantidad: 0,
+        typeTransactionId: '',
+        typeOp: '',
+        sustento: ''
+    });
 
     const onSubmit=()=>{
 

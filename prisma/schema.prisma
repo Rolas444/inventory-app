@@ -105,6 +105,8 @@ model Transaction {
   id                String          @id @default(uuid())
   userId            String
   typeTransactionId String
+  detail            String?
+  type              String
   quantity          Int
   price             Decimal
   createdAt         DateTime        @default(now())
