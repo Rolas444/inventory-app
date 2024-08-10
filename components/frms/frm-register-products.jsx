@@ -35,12 +35,13 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
         toast.info('Registrando Tipo de movimiento');
         console.log(watch());
         const currentForm = {...watch()};
-        currentForm.stock = Number(currentForm.stock);
+        currentForm.initStock = Number(currentForm.initStock);
         currentForm.price = Number(currentForm.price);
         currentForm.cost = Number(currentForm.cost);
         currentForm.wholesale = Number(currentForm.wholesale);
 
         if(stateForm ==='new'){
+            currentForm.stock= currentForm.initStock;
             let sresult = await createQuery('Product', currentForm);
             result = JSON.parse(sresult);
             console.log(result);

@@ -161,10 +161,13 @@ const ProductForms = ({ products }) => {
             // accessor: col.accessor,
             cell: ({ row }) => {
                 let index = row.original['platformProducts'].findIndex((item)=>item.typeTransactionId === col.id);
+                let quantity = row.original['platformProducts']?.[index]?.['quantity'] || 0;
+                let price = row.original['platformProducts']?.[index]?.['price'] || 0;
+
                 // console.log(index)
                 return (
                     <div className="flex justify-center">
-                        {row.original['platformProducts']?.[index] ? row.original['platformProducts']?.[index]?.['quantity'] : <></>}
+                        {row.original['platformProducts']?.[index] ? `${quantity} / ${price} Soles` : <></>}
                     </div>
                 );
             },

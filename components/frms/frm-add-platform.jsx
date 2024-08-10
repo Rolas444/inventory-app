@@ -21,7 +21,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
     const [initForm, setInitForm] = useState({
         productId: currentData.id,
         typeTransactionId: '',
-        initQuantity: '',
+        initQuantity: 0,
         price: '',
     });
     const { control, handleSubmit, setValue,reset, watch } = useForm({
@@ -76,12 +76,13 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
         console.log('llegamos al submit')
         setModalLoading(true);
         const validForm = {...watch()};
-        validForm.quantity = Number(validForm.quantity);
+        validForm.initQuantity = Number(validForm.initQuantity);
         validForm.price = Number(validForm.price);
         var result = {}
         // toast.info('Registrando usuario');
         // console.log(watch());
         if(actionForm ==='new'){
+            validForm.quantity = validForm.initQuantity;
             let sresult = await createQuery('PlatformProduct',{...validForm});
             result = JSON.parse(sresult);
             // console.log(result);
