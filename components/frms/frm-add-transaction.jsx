@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import InputControlled from "../ui/input-controlled";
 import SelectControlled from "../ui/select-controlled";
-import { getQuery } from "@/actions/query-actions";
+import { createQuery, getQuery } from "@/actions/query-actions";
 import { createOptions } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -15,16 +15,21 @@ const FrmAddTransaction = ({currentData}) => {
         { value: 'I', label: 'Ingreso' },
         { value: 'O', label: 'Salida' }
     ])
-    const [tOps, setTOps] = useState([])
-    const { control, handleSubmit, watch } = useForm()
+    
+    const today = new Date().toISOString().split('T')[0]
+    // console.log(toDay);
     const [initForm, setInitForm] = useState({
-        date: '',
-        cantidad: 0,
+        date: today,
+        quantity: 0,
         typeTransactionId: null,
         productId: currentData.id,
         type: null,
         detail: ''
     });
+
+    const { control, handleSubmit, watch, reset } = useForm({
+        defaultValues: initForm
+        })
 
     const fnGetTypesTransactions = async () => {
         // const result = []
@@ -45,21 +50,46 @@ const FrmAddTransaction = ({currentData}) => {
 
     }
 
-    const onSubmit = () => {
+    const fnSaveTransaction = async (data) => {
+        var result = {}
+        let sresult = await createQuery('Transaction', data);
+            result = JSON.parse(sresult);
+            console.log(result);
 
+        if(result.error){
+            console.log(result)
+           toast.error(result.error);
+        }
+        if(result.success){
+            toast.success('Se guardó correctamente ');
+            router.refresh();
+        }
+    }
+
+    const onSubmit = async () => {
+        setModalLoading(true);
+        
+        toast.info('Registrando Tipo de movimiento');
+        console.log(watch());
+        const currentForm = {...watch()};
+        currentForm.stock = Number(currentForm.quantity);
+        
+        setModalLoading(false);
     }
 
     useEffect(()=>{
         fnGetTypesTransactions()
     },[])
 
+    console.log(watch())
+
     return (<>
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-full flex justify-between gap-2">
                     <div className="w-full">
-                        <InputControlled name='date' type="date" control={control} label='Fecha' rules={{ required: false }} />
-                        <InputControlled name='cantidad' type="number" control={control} label='cantidad' rules={{ required: false }} />
+                        <InputControlled name='date' type="date" control={control} label='Fecha' rules={{ required: true }} />
+                        <InputControlled name='quantity' type="number" control={control} label='cantidad' rules={{ required: false }} />
                         <SelectControlled name='typeTransactionId' control={control} label='Tipo de movimiento' rules={{ required: false }} options={typeTransactions} />
 
                     </div>

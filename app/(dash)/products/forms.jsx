@@ -54,8 +54,11 @@ const ProductForms = ({ products }) => {
 
     }
 
-    const handleAddTransaction = (row) => {
+    const handleAddTransaction = async(row) => {
+        setLoading(true);
+        await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'addTransaction');
+        setLoading(false);
     }
 
     const handleAddPlatform = async (row) => {
