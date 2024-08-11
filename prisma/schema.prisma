@@ -110,12 +110,14 @@ model Transaction {
   detail            String?
   type              String
   quantity          Int
-  price             Decimal
+  price             Decimal?
   dateOp            DateTime
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
-  typeTransaction   TypeTransaction @relation(fields: [typeTransactionId], references: [id])
-  user              User            @relation(fields: [userId], references: [id])
+  // typeTransaction   TypeTransaction @relation(fields: [typeTransactionId], references: [id])
+  // user              User            @relation(fields: [userId], references: [id])
 
   Product Product[]
+  typeTransaction TypeTransaction[]
+  user User[]
 }

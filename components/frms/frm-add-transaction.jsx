@@ -19,7 +19,7 @@ const FrmAddTransaction = ({currentData}) => {
     const today = new Date().toISOString().split('T')[0]
     // console.log(toDay);
     const [initForm, setInitForm] = useState({
-        date: today,
+        dateOp: today,
         typeTransactionId: null,
         productId: currentData.id,
         type: null,
@@ -115,7 +115,7 @@ const FrmAddTransaction = ({currentData}) => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-full flex justify-between gap-2">
                     <div className="w-full">
-                        <InputControlled name='date' type="date" control={control} label='Fecha' rules={{ required: true }} />
+                        <InputControlled name='dateOp' type="date" control={control} label='Fecha' rules={{ required: true }} />
                         <InputControlled name='quantity' type="number" control={control} label='cantidad' rules={{ required: false }} />
                         <SelectControlled name='typeTransactionId' control={control} label='Tipo de movimiento' rules={{ required: true }} options={typeTransactions} />
 

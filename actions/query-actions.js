@@ -64,7 +64,7 @@ export const createQuery = async (enityName, data) => {
     return JSON.stringify(objresult);
   } catch (e) {
     console.log(e);
-    const objError= { error: e };
+    const objError= { error: e.message };
     return JSON.stringify(objError);
   }
 };
