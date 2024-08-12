@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createQuery, updateQuery } from "@/actions/query-actions";
 import { updateDataForm } from "@/lib/tools";
+import InputImageControlled from "@/components/ui/input-image-controlled";
 import { CiImageOn } from "react-icons/ci";
 
 const FrmRegisterProducts = ({ stateForm, currentData }) => {
@@ -79,7 +80,8 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
                     </div>
                     <div className="w-full">
                         <div className="w-full flex justify-center">
-                            <CiImageOn  className=" w-full h-auto align-center"/>
+                            {/* <CiImageOn  className=" w-full h-auto align-center"/> */}
+                            <InputImageControlled name="image" control={control} label="Imagen" rules={{ required: false }} />
                         </div>
                     </div>
                 </div>
