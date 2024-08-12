@@ -7,7 +7,7 @@ import { createQuery, getQuery } from "@/actions/query-actions";
 import { createOptions } from "@/lib/utils";
 import { toast } from "sonner";
 
-const FrmAddTransaction = ({currentData}) => {
+const FrmAddTransaction = ({currentData, userId}) => {
 
     const [modalLoading, setModalLoading] = useState(false);
     const [typeTransactions, setTypeTransactions] = useState([])
@@ -21,9 +21,11 @@ const FrmAddTransaction = ({currentData}) => {
     const [initForm, setInitForm] = useState({
         dateOp: today,
         typeTransactionId: null,
+        userId: userId,
         productId: currentData.id,
         type: null,
-        detail: ''
+        detail: '',
+        quantity: 0
     });
 
     const { control, handleSubmit, watch, reset } = useForm({
@@ -36,7 +38,7 @@ const FrmAddTransaction = ({currentData}) => {
                 productId: currentData.id
             }
         })
-        console.log(result);
+        // console.log(result);
         if (result.error) {
             toast.error('Error al obtener plataformas');
         }
@@ -62,7 +64,7 @@ const FrmAddTransaction = ({currentData}) => {
         if (result.success) {
 
             const platforms = await fnGetPlatforms();
-            console.log(platforms);
+            // console.log(platforms);
             let activePlatforms = result.data.filter((item)=>{
                 if(!item.platform){
                     return item
@@ -70,8 +72,8 @@ const FrmAddTransaction = ({currentData}) => {
                 return platforms.find((p)=>p.typeTransactionId === item.id)
             })
 
-            console.log(activePlatforms);
-            console.log(result.data);
+            // console.log(activePlatforms);
+            // console.log(result.data);
             setTypeTransactions(createOptions(activePlatforms,'id','name'));
         }
 
@@ -99,7 +101,8 @@ const FrmAddTransaction = ({currentData}) => {
         toast.info('Registrando Tipo de movimiento');
         console.log(watch());
         const currentForm = {...watch()};
-        currentForm.stock = Number(currentForm.quantity);
+        currentForm.quantity = Number(currentForm.quantity);
+        currentForm.dateOp = new Date(currentForm.dateOp).toISOString();
         await fnSaveTransaction(currentForm);
         setModalLoading(false);
     }

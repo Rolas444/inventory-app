@@ -28,6 +28,7 @@ import ViewHistry from "@/components/frms/view-history";
 import { AiOutlineLoading } from "react-icons/ai";
 import { getQuery } from "@/actions/query-actions";
 import { platform } from "os";
+import { select } from "@nextui-org/theme";
 
 const ProductForms = ({ products }) => {
 
@@ -37,6 +38,7 @@ const ProductForms = ({ products }) => {
     const { entityName, entityId, action, session } = useInventoryStore()
     const [currentData, setCurrentData] = useState({});
     const [frmAction, setFrmAction] = useState('register');
+    const [userId, setUserId] = useState(null);
 
     const { setEntityObject } = useInventoryStore();
 
@@ -78,10 +80,27 @@ const ProductForms = ({ products }) => {
             toast.error('Error al obtener Producto');
         }
         if (result.success) {
-            console.log(result);
+            // console.log(result);
             setCurrentData(result.data[0]);
         }
 
+    }
+
+    const fnGetUserId= async(email)=>{
+        const result = await getQuery('User', {
+            where: {
+                email: email
+            },
+            select: {
+                id: true
+            }
+        })
+        if (result.error) {
+            toast.error('Error al obtener usuario');
+        }
+        if (result.success) {
+            return result.data[0].id;
+        }
     }
 
     const fnGetPlatforms = async () => {
@@ -126,7 +145,7 @@ const ProductForms = ({ products }) => {
             case 'edit':
                 return <FrmRegisterProducts stateForm={action} currentData={currentData} />
             case 'addTransaction':
-                return <FrmAddTransaction stateForm={action} currentData={currentData} />
+                return <FrmAddTransaction stateForm={action} currentData={currentData} userId={userId} />
             case 'addPlatform':
                 return <FrmAddPlatform stateForm={action} currentData={currentData} />
             case 'history':
@@ -144,6 +163,10 @@ const ProductForms = ({ products }) => {
             setIsAdmin(true);
         }
 
+        // getID
+        const id = await fnGetUserId(session?.user.email);
+        console.log(id);
+        setUserId(id);
     }
 
     const btnNew = () => {
@@ -227,13 +250,13 @@ const ProductForms = ({ products }) => {
     useEffect(() => {
         getAuth()
         fnGetPlatforms()
-    }, [session])
+    }, [])
 
     return (<>
         <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
         <DialogContent className="w-full">
             <DialogHeader>
-                {!loading &&<DialogTitle>{titleForm()}</DialogTitle>}
+                {!loading ?<DialogTitle>{titleForm()}</DialogTitle>:<DialogTitle></DialogTitle>}
                 <DialogDescription>
 
                 </DialogDescription>
