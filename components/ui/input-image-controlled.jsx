@@ -3,11 +3,13 @@ import { useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { toast } from "sonner";
 import { CiImageOn } from "react-icons/ci";
+import { RiImageEditFill } from "react-icons/ri";
+import { MdDeleteOutline } from "react-icons/md";
 
 const InputImageControlled = ({ name, control, label, errors, rules, }) => {
 
     const inpurRef = useRef(null);
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
     const [uriViewer, setUriViewer] = useState(null);
 
@@ -44,8 +46,9 @@ const InputImageControlled = ({ name, control, label, errors, rules, }) => {
             name={name}
             control={control}
             render={({ field }) => (<>
-                <div className="group d-inline-block position-relative opacity-trigger-hover">
-                    <div className="absolute w-full  bottom-0 opacity-0 group-hover:opacity-100">
+                <div className="group w-full d-inline-block position-relative opacity-trigger-hover p-2 group">
+                    <div className="">
+                        <label>{label}</label>
                     </div>
                     <input
                         ref={inpurRef}
@@ -54,14 +57,24 @@ const InputImageControlled = ({ name, control, label, errors, rules, }) => {
                         onChange={(e) => handleFileChange(e, field)}
                         hidden
                     />
+                    <div className="w-full flex-col cursor-pointer relative">
                     {
                         files.length > 0 ? (
-                            <div className="w-24 h-24">
-                                <img src={files} alt="preview" className="w-full h-full object-cover" />
-                            </div>) : (<>
-                                <CiImageOn  className=" w-full h-auto align-center"/>
+                            
+                                <img src={files} alt="preview" className="w-full  h-auto align-center object-cover" />
+                            ) : (<>
+                                
+                                <CiImageOn onClick={()=>inpurRef.current.click()}  className=" w-full h-auto align-center"/>
+                                
                             </>)
                     }
+                    <div className="w-full bg-black bg-opacity-70 bottom-0 text-white text-center p-2 mt-4 absolute bottom-0 left-0 right-0  opacity-0 group-hover:opacity-80 transition-opacity duration-300">
+                        <div className="w-full flex justify-between ">
+                            <button ><RiImageEditFill className="w-6 h-6"/></button>
+                            {files.length >0 && <button ><MdDeleteOutline className="w-6 h-6" /></button>}
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </>)}
         />

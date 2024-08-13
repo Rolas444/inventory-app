@@ -78,7 +78,7 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
                         <InputControlled name="wholesale" type="number" control={control} label="Precio Mayoreo" rules={{ required: true }} />
                         <InputControlled name="cost" type="number" control={control} label="Costo" rules={{ required: true }} />
                     </div>
-                    <div className="w-full">
+                    <div className="w-full flex felx-col items-center justify-center min-h-full">
                         <div className="w-full flex justify-center">
                             {/* <CiImageOn  className=" w-full h-auto align-center"/> */}
                             <InputImageControlled name="image" control={control} label="Imagen" rules={{ required: false }} />
