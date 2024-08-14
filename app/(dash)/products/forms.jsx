@@ -159,6 +159,7 @@ const ProductForms = ({ products }) => {
         // const datatSession = 
         const Level = await AuthLevel(session?.user.roleId);
         const objLevel = JSON.parse(Level);
+
         if (objLevel.name === 'admin') {
             setIsAdmin(true);
         }
@@ -253,7 +254,7 @@ const ProductForms = ({ products }) => {
     }, [])
 
     return (<>
-        <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
+        {userId && (<> <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} />
         <DialogContent className="w-full">
             <DialogHeader>
                 {!loading ?<DialogTitle>{titleForm()}</DialogTitle>:<DialogTitle></DialogTitle>}
@@ -272,6 +273,7 @@ const ProductForms = ({ products }) => {
 
 
         </DialogContent>
+        </>)}
     </>)
 
 }

@@ -6,7 +6,7 @@ import { CiImageOn } from "react-icons/ci";
 import { RiImageEditFill } from "react-icons/ri";
 import { MdDeleteOutline } from "react-icons/md";
 
-const InputImageControlled = ({ name, control, label, errors, rules, }) => {
+const InputImageControlled = ({ name, control, label, errors, rules, urlBase}) => {
 
     const inpurRef = useRef(null);
     const [files, setFiles] = useState('');
@@ -45,7 +45,11 @@ const InputImageControlled = ({ name, control, label, errors, rules, }) => {
         <Controller
             name={name}
             control={control}
-            render={({ field }) => (<>
+            render={({ field }) => {
+
+                const imageView = files.length > 0 ? files : `${urlBase}${field.value}&export=view`;
+
+            return (<>
                 <div className="group w-full d-inline-block position-relative opacity-trigger-hover p-2 group">
                     <div className="">
                         <label>{label}</label>
@@ -57,26 +61,27 @@ const InputImageControlled = ({ name, control, label, errors, rules, }) => {
                         onChange={(e) => handleFileChange(e, field)}
                         hidden
                     />
-                    <div className="w-full flex-col cursor-pointer relative">
+                    <div className="w-full flex-col  relative">
                     {
-                        files.length > 0 ? (
+                        field.value.length > 0 ? (
                             
-                                <img src={files} alt="preview" className="w-full  h-auto align-center object-cover" />
+                                <img src={imageView} alt="preview" className="w-full  h-auto align-center object-cover" />
                             ) : (<>
                                 
-                                <CiImageOn onClick={()=>inpurRef.current.click()}  className=" w-full h-auto align-center"/>
+                                <CiImageOn   className=" w-full h-auto align-center"/>
                                 
                             </>)
                     }
                     <div className="w-full bg-black bg-opacity-70 bottom-0 text-white text-center p-2 mt-4 absolute bottom-0 left-0 right-0  opacity-0 group-hover:opacity-80 transition-opacity duration-300">
                         <div className="w-full flex justify-between ">
-                            <button ><RiImageEditFill className="w-6 h-6"/></button>
-                            {files.length >0 && <button ><MdDeleteOutline className="w-6 h-6" /></button>}
+                            <button type="button" onClick={()=>inpurRef.current.click()} ><RiImageEditFill className="w-6 h-6"/></button>
+                            {field.value.length  >0 && <button type="button" onClick={()=>field.onChange('')} ><MdDeleteOutline className="w-6 h-6" /></button>}
                         </div>
                     </div>
                     </div>
                 </div>
             </>)}
+            }
         />
     </>)
 }

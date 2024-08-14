@@ -66,7 +66,7 @@ model Product {
   wholesale        Decimal
   cost             Decimal
   status           Boolean           @default(true)
-  initStok         Int               @default(0)
+  initStock        Int               @default(0)
   stock            Int               @default(0)
   image            String?
   description      String?
