@@ -254,7 +254,7 @@ const ProductForms = ({ products }) => {
     }, [])
 
     return (<>
-        {userId && (<> <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew(isAdmin)} />
+        {userId && (<> <DataTable columns={columns} data={JSON.parse(products)} btnNew={()=>btnNew(isAdmin)} />
         <DialogContent className="w-full">
             <DialogHeader>
                 {!loading ?<DialogTitle>{titleForm()}</DialogTitle>:<DialogTitle></DialogTitle>}
