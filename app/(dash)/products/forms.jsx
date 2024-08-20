@@ -70,8 +70,11 @@ const ProductForms = ({ products }) => {
         setLoading(false);
     }
 
-    const handleViewHistory = (row) => {
+    const handleViewHistory = async (row) => {
+        setLoading(true);
+        await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'history');
+        setLoading(false);
     }
 
     const fnGetProduct = async (id) => {
@@ -149,7 +152,7 @@ const ProductForms = ({ products }) => {
             case 'addPlatform':
                 return <FrmAddPlatform stateForm={action} currentData={currentData} />
             case 'history':
-                return <ViewHistry />
+                return <ViewHistry currentData={currentData} />
             default:
                 return <FrmRegisterProducts stateForm={action} currentData={currentData} />
         }

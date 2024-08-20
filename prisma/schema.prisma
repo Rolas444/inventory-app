@@ -114,10 +114,10 @@ model Transaction {
   dateOp            DateTime
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
-  // typeTransaction   TypeTransaction @relation(fields: [typeTransactionId], references: [id])
-  // user              User            @relation(fields: [userId], references: [id])
-
-  Product Product[]
-  typeTransaction TypeTransaction[]
-  user User[]
+  typeTransaction   TypeTransaction @relation(fields: [typeTransactionId], references: [id])
+  user              User            @relation(fields: [userId], references: [id])
+  product           Product         @relation(fields: [productId], references: [id])
+  // Product Product[]
+  // typeTransaction TypeTransaction[]
+  // user User[]
 }

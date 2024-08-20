@@ -3,17 +3,20 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import InputControlled from "../ui/input-controlled";
 import SelectControlled from "../ui/select-controlled";
-import { createQuery, getQuery } from "@/actions/query-actions";
+import { createQuery, getQuery, UpdateStocks } from "@/actions/query-actions";
 import { createOptions } from "@/lib/utils";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 const FrmAddTransaction = ({currentData, userId}) => {
 
+    const router = useRouter();
     const [modalLoading, setModalLoading] = useState(false);
     const [typeTransactions, setTypeTransactions] = useState([])
     const [types, setTypes] = useState([
-        { value: 'I', label: 'Ingreso' },
-        { value: 'O', label: 'Salida' }
+        { value: 'O', label: 'Salida' },
+        { value: 'I', label: 'Ingreso' }
     ])
     
     const today = new Date().toISOString().split('T')[0]
@@ -79,20 +82,35 @@ const FrmAddTransaction = ({currentData, userId}) => {
 
     }
 
+    const updateStock = async (data) => {
+        const result = await UpdateStocks(data);
+        console.log(result);
+        if (result.error) {
+
+            toast.error('Error al actualizar stock');
+        }
+        if (result.success) {
+            toast.success('Stock actualizado');
+        }
+    }
+
     const fnSaveTransaction = async (data) => {
         var result = {}
         let sresult = await createQuery('Transaction', data);
             result = JSON.parse(sresult);
-            console.log(result);
+            // console.log(result);
 
         if(result.error){
-            console.log(result)
+            // console.log(result)
            toast.error(result.error);
         }
         if(result.success){
+            // console.log(result)
+            await updateStock(result.data);
             toast.success('Se guardó correctamente ');
-            // router.refresh();
+            router.refresh();
         }
+        
     }
 
     const onSubmit = async () => {
@@ -105,6 +123,7 @@ const FrmAddTransaction = ({currentData, userId}) => {
         currentForm.dateOp = new Date(currentForm.dateOp).toISOString();
         await fnSaveTransaction(currentForm);
         setModalLoading(false);
+
     }
 
     useEffect(()=>{
@@ -132,7 +151,8 @@ const FrmAddTransaction = ({currentData, userId}) => {
                     <InputControlled name='detail' control={control} label='Sustento' rules={{ required: false }} />
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="btn btn-primary" disabled={modalLoading}>Guardar</button>
+                    {/* <button type="submit" className="btn btn-primary" disabled={modalLoading}>Guardar</button> */}
+                    {modalLoading ? <Loader className="animate-spin w-5 h-5" />:<button type="submit" className="btn btn-primary" >Guardar</button>}
                 </div>
             </form>
         </div>

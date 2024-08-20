@@ -10,6 +10,7 @@ import InputImageControlled from "@/components/ui/input-image-controlled";
 import { CiImageOn } from "react-icons/ci";
 import { deleteFile, uploadFile } from "../../actions/drive-actions";
 import { useInventoryStore } from "@/zustand/store";
+import { Loader } from "lucide-react";
 
 const FrmRegisterProducts = ({ stateForm, currentData }) => {
     const [modalLoading, setModalLoading] = useState(false);
@@ -111,7 +112,8 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="btn btn-primary" disabled={modalLoading}>Guardar</button>
+                    {/* <button type="submit" className="btn btn-primary" disabled={modalLoading}>Guardar</button> */}
+                    {modalLoading ? <Loader className="animate-spin w-5 h-5" />:<button type="submit" className="btn btn-primary" >Guardar</button>}
                 </div>
             </form>
         </div>

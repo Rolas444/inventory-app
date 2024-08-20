@@ -49,10 +49,16 @@ export const getQuery = async (enityName, param = null) => {
       ? await prisma[enityName].findMany(param)
       : await prisma[enityName].findMany();
     // console.log(result);
-    return { success: true, data: result };
+    const formattedResult = result.map(item => ({
+      ...item,
+      createdAt: item.createdAt ? item.createdAt.toLocaleString() : null,
+      updatedAt: item.updatedAt ? item.updatedAt.toLocaleString() : null,
+    }));
+    return { success: true, data: formattedResult };
+
   } catch (e) {
     console.log(e);
-    return { error: e.message};
+    return { error: JSON.stringify(e.message) };
   }
 };
 
@@ -78,3 +84,40 @@ export const updateQuery = async (enityName, where, data) => {
     return { error: e };
   }
 };
+
+export const UpdateStocks = async (data) => {
+  try {
+    var opNumber = data.type ==="I"? data.quantity : -data.quantity;
+    const result = await prisma.product.update({
+      where: { id: data.productId },
+      data: { stock: {
+        increment: opNumber
+      } },
+    });
+    console.log(result);
+
+    const platformProduct = await prisma.platformProduct.findFirst({
+      where: {
+        productId: data.productId,
+        platformId: data.platformId,
+      },
+    }); 
+
+    if (platformProduct) {
+      console.log(platformProduct);
+      const result2 = await prisma.platformProduct.update({
+        where: { id: platformProduct.id },
+        data: { quantity: {
+          increment: opNumber
+        } },
+      });
+      console.log(result2);
+
+    }
+
+    return { success: true, data: result };
+  } catch (e) {
+    console.log(e);
+    return { error: e };
+  }
+}

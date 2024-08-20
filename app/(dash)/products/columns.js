@@ -17,6 +17,13 @@ export const productColumns = [
     {
       header: "Stock",
       accessorKey: "stock",
+      cell: ({ row }) => {
+        return (
+          <div className="flex justify-center font-bold">
+            {row.original.stock}
+          </div>
+        );
+      },
     },
     {
       header: "Precio",

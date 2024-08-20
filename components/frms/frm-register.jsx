@@ -14,11 +14,12 @@ import { createOptions } from "@/lib/utils";
 import { updateDataForm } from "@/lib/tools";
 import bcrypt from "bcryptjs";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 const FrmRegister = ({stateForm, currentData}) => {
 
     const router = useRouter();
-
+    const [modalLoading, setModalLoading] = useState(false);
     const [initForm, setInitForm] = useState({
         name: '',
         email: '',
@@ -37,6 +38,7 @@ const FrmRegister = ({stateForm, currentData}) => {
 
 
     const onSubmit = async () => {
+        setModalLoading(true);
         var result = {}
         // toast.info('Registrando usuario');
         console.log(watch());
@@ -63,7 +65,7 @@ const FrmRegister = ({stateForm, currentData}) => {
         if(result.success){
             toast.success('Registro satisfactorio');
         }
-
+        setModalLoading(false);
         router.refresh();
     }
 
@@ -109,7 +111,8 @@ const FrmRegister = ({stateForm, currentData}) => {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                <button type="submit" className="btn btn-primary">Guardar</button>
+                {/* <button type="submit" className="btn btn-primary">Guardar</button> */}
+                {modalLoading ? <Loader className="animate-spin w-5 h-5" />:<button type="submit" className="btn btn-primary" >Guardar</button>}
                 </div>
             </form>
 

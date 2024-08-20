@@ -30,7 +30,7 @@ export default async function RootLayout({
       <NextUIProvider>
         {children}
         </NextUIProvider>
-      <Toaster richColors  />
+      <Toaster richColors expand={true}  />
       </body>
 
     </html>

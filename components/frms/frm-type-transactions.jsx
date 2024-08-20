@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import InputControlled from "../ui/input-controlled";
-import { Check } from "lucide-react";
+import { Check, Loader } from "lucide-react";
 import CheckboxControlled from "../ui/checkbox-controlled";
 import { createQuery, updateQuery } from "@/actions/query-actions";
 import { toast } from "sonner";
@@ -13,7 +13,7 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
 
     const router = useRouter();
 
-
+    const [modalLoading, setModalLoading] = useState(false);
     const [initForm, setInitForm] = useState({
         name: '',
         description: '',
@@ -29,7 +29,7 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
     );
 
     const onSubmit = async () => {
-
+        setModalLoading(true);
         var result = {}
         toast.info('Registrando Tipo de movimiento');
         console.log(watch());
@@ -44,6 +44,7 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
 
             result = await updateQuery('TypeTransaction', {id: formData.id},  formData);
         }
+        setModalLoading(false);
         if(result.error){
             console.log(result)
            toast.error(result.error);
@@ -70,7 +71,8 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <button type="submit" className="btn btn-primary">Guardar</button>
+                    {/* <button type="submit" className="btn btn-primary">Guardar</button> */}
+                    {modalLoading ? <Loader className="animate-spin w-5 h-5" />:<button type="submit" className="btn btn-primary" >Guardar</button>}
                 </div>
             </form>
 
