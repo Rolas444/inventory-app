@@ -12,10 +12,10 @@ export const userColumns = [
       header: "correo",
       accessorKey: "email",
     },
-    {
-      header: "Estado",
-      accessorKey: "status",
-    },
+    // {
+    //   header: "Estado",
+    //   accessorKey: "status",
+    // },
     {
       header: "Rol",
       accessorKey: "role.name",

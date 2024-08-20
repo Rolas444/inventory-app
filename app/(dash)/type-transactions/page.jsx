@@ -30,7 +30,7 @@ const TypeTransactionPage = async () => {
       <div className="flex items-center">
         <h1 className="text-lg font-semibold md:text-2xl">{`Tipos de Movimientos (transacciones)`}</h1>
       </div>
-      <div className="container ">
+      <div className="flex flex-col flex-grow container ">
         <Dialog>
            <TypeTransactionForm typeTransactions={typeTransactions} />
         </Dialog>

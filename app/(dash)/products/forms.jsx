@@ -169,7 +169,7 @@ const ProductForms = ({ products }) => {
 
         // getID
         const id = await fnGetUserId(session?.user.email);
-        console.log(id);
+        // console.log(id);
         setUserId(id);
     }
 

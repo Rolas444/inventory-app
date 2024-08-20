@@ -10,10 +10,10 @@ export const productColumns = [
       header: "SKU",
       accessorKey: "sku",
     },
-    {
-      header: "Estado",
-      accessorKey: "status",
-    },
+    // {
+    //   header: "Estado",
+    //   accessorKey: "status",
+    // },
     {
       header: "Stock",
       accessorKey: "stock",

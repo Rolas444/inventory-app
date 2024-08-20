@@ -1,10 +1,7 @@
 "use client";
 
-// import {
-//   CaretSortIcon,
-//   ChevronDownIcon,
-//   DotsHorizontalIcon,
-// } from "@radix-ui/react-icons"
+import { BiFirstPage, BiLastPage } from "react-icons/bi";
+import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 import {
   ColumnDef,
@@ -33,9 +30,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+// import { Pagination, PaginationItem } from "@nextui-org/react";
+import { Pagination, PaginationItem, PaginationContent, PaginationEllipsis, PaginationLink } from "../ui/pagination";
 
 const DataTable = ({ columns, data = [], btnNew }) => {
 
@@ -44,6 +43,7 @@ const DataTable = ({ columns, data = [], btnNew }) => {
   const [columnVisibility, setColumnVisibility] = useState({})
   const [rowSelection, setRowSelection] = useState({})
   const [globalFilter, setGlobalFilter] = useState('')
+  const [pagination, setPagination] = useState({ pageIndex: 1, pageSize: 10 })
 
   const fuzzyFilter = (row, columnId, value, addMeta) => {
     const itemRank = rankItem(row.getValue(columnId), value)
@@ -71,17 +71,23 @@ const DataTable = ({ columns, data = [], btnNew }) => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      globalFilter
+      globalFilter,
+      pagination,
     }
   });
 
+  useEffect(()=>{
+    setPagination({ ...pagination, pageIndex: 0 })
+  },[data])
+
   return (
     <>
-      <div className="w-full  ">
+      <div className="flex flex-grow flex-col w-full  ">
         <div className="w-full flex items-center py-3 justify-between gap-2">
           <Input
             placeholder="Buscar..."
@@ -98,7 +104,7 @@ const DataTable = ({ columns, data = [], btnNew }) => {
 
           </div>
         </div>
-        <div className="rounded-md border max-w-full overflow-x-auto">
+        <div className="flex-grow rounded-md border max-w-full h-full overflow-x-auto">
           <Table className="table md:table-fixed min-w-full table-auto">
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -147,7 +153,50 @@ const DataTable = ({ columns, data = [], btnNew }) => {
               )}
             </TableBody>
           </Table>
+          
         </div>
+        <Pagination className="bottom-0 pt-2">
+            <PaginationContent>
+              <PaginationItem>
+                <Button
+                  onClick={() => table.firstPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <BiFirstPage className="w-3 h-3"/>
+                </Button>
+              </PaginationItem>
+              
+              <PaginationItem>
+                <Button
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                >
+                  <GrFormPrevious className="w-3 h-3"/>
+                </Button>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink isActive>
+                {typeof table.getState().pagination.pageIndex !== 'number'? <PaginationEllipsis />: table.getState().pagination.pageIndex + 1}
+                </PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <Button
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <GrFormNext className="w-3 h-3"/>
+                </Button>
+              </PaginationItem>
+              <PaginationItem>
+                <Button
+                  onClick={() => table.lastPage()}
+                  disabled={!table.getCanNextPage()}
+                >
+                  <BiLastPage className="w-3 h-3"/>
+                </Button>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
       </div>
     </>
   );
