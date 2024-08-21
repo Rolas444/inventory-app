@@ -36,7 +36,7 @@ import { Button } from "@/components/ui/button"
 // import { Pagination, PaginationItem } from "@nextui-org/react";
 import { Pagination, PaginationItem, PaginationContent, PaginationEllipsis, PaginationLink } from "../ui/pagination";
 
-const DataTable = ({ columns, data = [], btnNew }) => {
+const DataTable = ({ columns, data = [], btnNew, isAdmin }) => {
 
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])

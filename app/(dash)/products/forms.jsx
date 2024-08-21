@@ -173,8 +173,8 @@ const ProductForms = ({ products }) => {
         setUserId(id);
     }
 
-    const btnNew = (boolAdmin) => {
-        return boolAdmin ? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger> : <></>
+    const btnNew = () => {
+        return isAdmin ? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger> : <></>
     }
 
     const authColumns = () => isAdmin ? productColumns : productColumns.filter(col => col.accessorKey !== 'wholesale')
@@ -257,7 +257,7 @@ const ProductForms = ({ products }) => {
     }, [])
 
     return (<>
-        {userId && (<> <DataTable columns={columns} data={JSON.parse(products)} btnNew={()=>btnNew(isAdmin)} />
+         <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} isAdmin={isAdmin} />
         <DialogContent className="w-full">
             <DialogHeader>
                 {!loading ?<DialogTitle>{titleForm()}</DialogTitle>:<DialogTitle></DialogTitle>}
@@ -276,7 +276,7 @@ const ProductForms = ({ products }) => {
 
 
         </DialogContent>
-        </>)}
+        
     </>)
 
 }

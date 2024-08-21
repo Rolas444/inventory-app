@@ -1,14 +1,7 @@
 import React from "react";
-// import { userColumns } from "./columns";
 import { getQuery } from "@/actions/query-actions";
-import UserForms from "./forms";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import ProductForms from "./forms";
 
