@@ -2,20 +2,13 @@ import React from "react";
 // import { userColumns } from "./columns";
 import { getQuery } from "@/actions/query-actions";
 import UserForms from "./forms";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 const PageUsers = async () => {
   var users =[]
   // var roles = []
 
   const result = await getQuery("user", {
+    where: { status: true },
     include: {
       role: true,
     },
@@ -35,9 +28,7 @@ const PageUsers = async () => {
         <h1 className="text-lg font-semibold md:text-2xl">Usuarios</h1>
       </div>
       <div className="flex flex-col flex-grow container">
-        <Dialog>
            <UserForms users={users} />
-        </Dialog>
       </div>
     </>
   );

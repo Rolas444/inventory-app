@@ -9,11 +9,12 @@ import { createQuery, getQuery, updateQuery } from "@/actions/query-actions";
 import { updateDataForm } from "@/lib/tools";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
+import { useInventoryStore } from "@/zustand/store";
 
 const FrmAddPlatform = ({ stateForm, currentData }) => {
 
     const [modalLoading, setModalLoading] = useState(false);
-
+    const {setModalOpen} = useInventoryStore();
     const [platforms, setPlatforms] = useState([])
     const [actionForm, setActionForm] = useState('new');
     const router = useRouter();
@@ -104,6 +105,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
         }
         setModalLoading(false);
         router.refresh();
+        setModalOpen(false);
     }
 
     useEffect(()=>{

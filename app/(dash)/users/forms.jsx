@@ -26,21 +26,21 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const UserForms = ({ users }) => {
-    const { entityName, entityId, action } = useInventoryStore()
+    const { entityName, entityId, action, modalOpen, setModalOpen } = useInventoryStore()
     const { setEntityObject } = useInventoryStore();
     const [currentData, setCurrentData] = useState({});
     const [loading, setLoading] = useState(false);
 
     const fnGetUser = async (id) => {
-        const result = await getQuery("user", {where: {id: id, status: true}});
+        const result = await getQuery("user", { where: { id: id, status: true } });
         if (result.error) {
             toast.error('Error al obtener usuario');
         }
-        if(result.success){
+        if (result.success) {
             console.log(result);
             setCurrentData(result.data[0]);
         }
-        
+
     }
 
     const handleEdit = async (row) => {
@@ -48,14 +48,15 @@ const UserForms = ({ users }) => {
         await fnGetUser(row.original.id);
         setEntityObject('user', row.original.id, 'edit');
         setLoading(false);
+        setModalOpen(true);
     };
 
     const handleNew = async () => {
         setEntityObject('user', null, 'new');
-
+        setModalOpen(true);
     }
 
-    const btnNew =()=> <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger>
+    const btnNew = () => <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger>
 
     const columns = [...userColumns,
     {
@@ -72,7 +73,7 @@ const UserForms = ({ users }) => {
                         <DropdownMenuLabel>Acciones</DropdownMenuLabel>
                         <DropdownMenuItem>
                             <DialogTrigger
-                                onClick={async () =>await handleEdit( row)}
+                                onClick={async () => await handleEdit(row)}
                                 className="cursor-pointer"
                             >
                                 Editar
@@ -97,22 +98,24 @@ const UserForms = ({ users }) => {
     // },[entityId])
 
     return (<>
-        <DataTable columns={columns} data={users} btnNew={btnNew} />
-        <DialogContent className="">
-            <DialogHeader>
-                <DialogTitle>{action === 'edit' ? 'Editar Usuario' : 'Nuevo Usuario'}</DialogTitle>
-                <DialogDescription>
+        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+            <DataTable columns={columns} data={users} btnNew={btnNew} />
+            <DialogContent className="">
+                <DialogHeader>
+                    <DialogTitle>{action === 'edit' ? 'Editar Usuario' : 'Nuevo Usuario'}</DialogTitle>
+                    <DialogDescription>
 
-                </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-                <div className="grid items-center gap-4">
-                    { !loading ? <FrmRegister stateForm={action} currentData={currentData} />: <div className="w-full flex justify-center"><AiOutlineLoading  className="mr-2 h-10 w-10 animate-spin" /></div>}
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid items-center gap-4">
+                        {!loading ? <FrmRegister stateForm={action} currentData={currentData} /> : <div className="w-full flex justify-center"><AiOutlineLoading className="mr-2 h-10 w-10 animate-spin" /></div>}
+                    </div>
                 </div>
-            </div>
 
 
-        </DialogContent>
+            </DialogContent>
+        </Dialog>
     </>)
 
 }

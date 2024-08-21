@@ -8,10 +8,12 @@ import { toast } from "sonner";
 import { platform } from "os";
 import { useRouter } from "next/navigation";
 import { updateDataForm } from "@/lib/tools";
+import { useInventoryStore } from "@/zustand/store";
 
 const FrmTypeTransactions = ({ stateForm , currentData }) => {
 
     const router = useRouter();
+    const {setModalOpen} = useInventoryStore();
 
     const [modalLoading, setModalLoading] = useState(false);
     const [initForm, setInitForm] = useState({
@@ -31,7 +33,7 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
         setModalLoading(true);
         var result = {}
         toast.info('Registrando Tipo de movimiento');
-        console.log(watch());
+        // console.log(watch());
         if(stateForm ==='new'){
             let sresult = await createQuery('TypeTransaction', {...watch()});
             result = JSON.parse(sresult);
@@ -51,6 +53,7 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
         if(result.success){
             toast.success('Se guardó correctamente ');
             router.refresh();
+            setModalOpen(false);
         }
         
     }

@@ -39,7 +39,7 @@ const ViewHistory = ({currentData}) => {
 
         <div className="w-full mt-3 text-xs">
             <table className="w-full">
-                <thead>
+                <thead className="text-left">
                     <tr>
                         <th>Fecha</th>
                         <th>Nombre</th>

@@ -30,7 +30,7 @@ const PageProducts = async () => {
         <h1 className="text-lg font-semibold md:text-2xl">Productos</h1>
       </div>
       <div className="flex flex-col flex-grow container ">
-        <Dialog>
+        <Dialog >
            <ProductForms products={products} />
         </Dialog>
       </div>

@@ -15,9 +15,12 @@ import { updateDataForm } from "@/lib/tools";
 import bcrypt from "bcryptjs";
 import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
+import { useInventoryStore } from "@/zustand/store";
 
 const FrmRegister = ({stateForm, currentData}) => {
 
+    // console.log(currentData);
+    const {setModalOpen} = useInventoryStore();
     const router = useRouter();
     const [modalLoading, setModalLoading] = useState(false);
     const [initForm, setInitForm] = useState({
@@ -66,6 +69,7 @@ const FrmRegister = ({stateForm, currentData}) => {
         }
         setModalLoading(false);
         router.refresh();
+        setModalOpen(false);
     }
 
     const getRoles = async () => {

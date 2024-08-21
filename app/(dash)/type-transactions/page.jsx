@@ -15,7 +15,9 @@ const TypeTransactionPage = async () => {
   var typeTransactions =[]
   // var roles = []
 
-  const result = await getQuery("TypeTransaction");
+  const result = await getQuery("TypeTransaction", {
+    where: { status: true },
+  });
   // console.log(result);  TypeTransaction
   if (result.error) {
     return <div>No se encontraron registros</div>;
@@ -31,9 +33,7 @@ const TypeTransactionPage = async () => {
         <h1 className="text-lg font-semibold md:text-2xl">{`Tipos de Movimientos (transacciones)`}</h1>
       </div>
       <div className="flex flex-col flex-grow container ">
-        <Dialog>
            <TypeTransactionForm typeTransactions={typeTransactions} />
-        </Dialog>
       </div>
     </>
   );

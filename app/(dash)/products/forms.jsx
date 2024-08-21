@@ -39,8 +39,8 @@ const ProductForms = ({ products }) => {
     const [currentData, setCurrentData] = useState({});
     const [frmAction, setFrmAction] = useState('register');
     const [userId, setUserId] = useState(null);
-    
-    const { setEntityObject } = useInventoryStore();
+
+    const { setEntityObject, modalOpen, setModalOpen } = useInventoryStore();
 
     // console.log(products);
 
@@ -48,18 +48,20 @@ const ProductForms = ({ products }) => {
         setLoading(true);
         await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'edit');
+        setModalOpen(true);
         setLoading(false);
     };
 
     const handleNew = () => {
         setEntityObject('Product', null, 'new');
-
+        setModalOpen(true);
     }
 
-    const handleAddTransaction = async(row) => {
+    const handleAddTransaction = async (row) => {
         setLoading(true);
         await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'addTransaction');
+        setModalOpen(true);
         setLoading(false);
     }
 
@@ -67,6 +69,7 @@ const ProductForms = ({ products }) => {
         setLoading(true);
         await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'addPlatform');
+        setModalOpen(true);
         setLoading(false);
     }
 
@@ -74,6 +77,7 @@ const ProductForms = ({ products }) => {
         setLoading(true);
         await fnGetProduct(row.original.id);
         setEntityObject('Product', row.original.id, 'history');
+        setModalOpen(true);
         setLoading(false);
     }
 
@@ -89,7 +93,7 @@ const ProductForms = ({ products }) => {
 
     }
 
-    const fnGetUserId= async(email)=>{
+    const fnGetUserId = async (email) => {
         const result = await getQuery('User', {
             where: {
                 email: email
@@ -119,7 +123,7 @@ const ProductForms = ({ products }) => {
             toast.error('Error al obtener plataformas');
         }
         if (result.success) {
-            
+
             setPlatformColumns(result.data);
         }
     }
@@ -141,10 +145,10 @@ const ProductForms = ({ products }) => {
         }
     }
 
-    const managerForm = ()=>{
-        switch (action){
+    const managerForm = () => {
+        switch (action) {
             case 'new':
-                return <FrmRegisterProducts stateForm={action} currentData={currentData}  />
+                return <FrmRegisterProducts stateForm={action} currentData={currentData} />
             case 'edit':
                 return <FrmRegisterProducts stateForm={action} currentData={currentData} />
             case 'addTransaction':
@@ -181,13 +185,13 @@ const ProductForms = ({ products }) => {
 
 
     const columns = [...authColumns(),
-    ...platformColumns.map((col)=>{
+    ...platformColumns.map((col) => {
         // console.log(col)
         return {
             header: col.name,
             // accessor: col.accessor,
             cell: ({ row }) => {
-                let index = row.original['platformProducts'].findIndex((item)=>item.typeTransactionId === col.id);
+                let index = row.original['platformProducts'].findIndex((item) => item.typeTransactionId === col.id);
                 let quantity = row.original['platformProducts']?.[index]?.['quantity'] || 0;
                 let price = row.original['platformProducts']?.[index]?.['price'] || 0;
 
@@ -222,7 +226,7 @@ const ProductForms = ({ products }) => {
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <DialogTrigger
-                                onClick={() => handleAddPlatform( row)}
+                                onClick={() => handleAddPlatform(row)}
                                 className="cursor-pointer"
                             >
                                 Registrar plataforma
@@ -257,26 +261,27 @@ const ProductForms = ({ products }) => {
     }, [])
 
     return (<>
-         <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} isAdmin={isAdmin} />
-        <DialogContent className="w-full">
-            <DialogHeader>
-                {!loading ?<DialogTitle>{titleForm()}</DialogTitle>:<DialogTitle></DialogTitle>}
-                <DialogDescription>
+        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+            <DataTable columns={columns} data={JSON.parse(products)} btnNew={btnNew} isAdmin={isAdmin} />
+            <DialogContent className="w-full">
+                <DialogHeader>
+                    {!loading ? <DialogTitle>{titleForm()}</DialogTitle> : <DialogTitle></DialogTitle>}
+                    <DialogDescription>
 
-                </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-                <div className="grid gap-4">
-                    {!loading ? 
-                    // <FrmRegisterProducts stateForm={action} currentData={currentData} />
-                    managerForm()
-                        : <div className="w-full flex justify-center"><AiOutlineLoading className="mr-2 h-10 w-10 animate-spin" /></div>}
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid gap-4">
+                        {!loading ?
+                            // <FrmRegisterProducts stateForm={action} currentData={currentData} />
+                            managerForm()
+                            : <div className="w-full flex justify-center"><AiOutlineLoading className="mr-2 h-10 w-10 animate-spin" /></div>}
+                    </div>
                 </div>
-            </div>
 
 
-        </DialogContent>
-        
+            </DialogContent>
+        </Dialog>
     </>)
 
 }

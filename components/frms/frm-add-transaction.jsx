@@ -8,6 +8,7 @@ import { createOptions } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
+import { useInventoryStore } from "@/zustand/store";
 
 const FrmAddTransaction = ({currentData, userId}) => {
 
@@ -19,6 +20,7 @@ const FrmAddTransaction = ({currentData, userId}) => {
         { value: 'I', label: 'Ingreso' }
     ])
     
+    const {setModalOpen}= useInventoryStore();
     const today = new Date().toISOString().split('T')[0]
     // console.log(toDay);
     const [initForm, setInitForm] = useState({
@@ -123,7 +125,7 @@ const FrmAddTransaction = ({currentData, userId}) => {
         currentForm.dateOp = new Date(currentForm.dateOp).toISOString();
         await fnSaveTransaction(currentForm);
         setModalLoading(false);
-
+        setModalOpen(false);
     }
 
     useEffect(()=>{

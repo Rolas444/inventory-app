@@ -71,7 +71,7 @@ const InputImageControlled = ({ name, control, label, errors, rules }) => {
                         />
                         <div className="w-full flex-col  relative">
                             {
-                                field.value.length > 0 ? (
+                                field?.value?.length > 0 ? (
 
                                     <img src={imageView} alt="preview" className="w-full  h-auto align-center object-cover" />
                                 ) : (<>
@@ -83,7 +83,7 @@ const InputImageControlled = ({ name, control, label, errors, rules }) => {
                             <div className="w-full bg-black bg-opacity-70 bottom-0 text-white text-center p-2 mt-4 absolute bottom-0 left-0 right-0  opacity-0 group-hover:opacity-80 transition-opacity duration-300">
                                 <div className="w-full flex justify-between ">
                                     <button type="button" onClick={() => inpurRef.current.click()} ><RiImageEditFill className="w-6 h-6" /></button>
-                                    {field.value.length > 0 && <button type="button" onClick={() => field.onChange('')} ><MdDeleteOutline className="w-6 h-6" /></button>}
+                                    {field.value?.length > 0 && <button type="button" onClick={() => field.onChange('')} ><MdDeleteOutline className="w-6 h-6" /></button>}
                                 </div>
                             </div>
                         </div>

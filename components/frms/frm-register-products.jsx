@@ -12,10 +12,11 @@ import InputImageControlled from "@/components/ui/input-image-controlled";
 // import { useInventoryStore } from "@/zustand/store";
 import { Loader } from "lucide-react";
 import { deleteFile, uploadFile } from "../../actions/supabase";
+import { useInventoryStore } from "@/zustand/store";
 
 const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
     const [modalLoading, setModalLoading] = useState(false);
-
+    const { setModalOpen } = useInventoryStore();
     const router = useRouter()
     const [initForm, setInitForm] = useState({
         name: '',
@@ -38,7 +39,7 @@ const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
 
     const uploadImages = async (originalImg, currentImg, fileName )=>{
         if(originalImg !== currentImg){
-            if(originalImg.length > 0 && stateForm === 'edit'){
+            if(originalImg?.length > 0 && stateForm === 'edit'){
                 console.log('borrando imagen');
                 // await deleteFile(originalImg);
                 let res =await deleteFile(originalImg);
@@ -46,10 +47,10 @@ const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
                 
             }
 
-            if(currentImg.length > 0){
+            if(currentImg?.length > 0){
                 // const response = await uploadFile(currentImg, fileName);
                 const response = await uploadFile(currentImg, fileName);
-                console.log(response);
+                // console.log(response);
                 return response; 
             }else{
                 return '';
@@ -65,7 +66,7 @@ const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
         setModalLoading(true);
         var result = {}
         toast.info('Registrando Tipo de movimiento');
-        console.log(watch());
+        // console.log(watch());
         const currentForm = {...watch()};
         currentForm.initStock = Number(currentForm.initStock);
         currentForm.price = Number(currentForm.price);
@@ -95,8 +96,9 @@ const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
         if(result.success){
             toast.success('Se guardó correctamente ');
             router.refresh();
+            
         }
-        
+        setModalOpen(false);
         setModalLoading(false);
     }
 

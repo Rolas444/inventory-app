@@ -26,7 +26,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 
 const TypeTransactionForm = ({ typeTransactions }) => {
     const [loading, setLoading] = useState(false);
-    const { entityName, entityId, action } = useInventoryStore()
+    const { entityName, entityId, action, modalOpen, setModalOpen } = useInventoryStore()
     const [currentData, setCurrentData] = useState({});
     const { setEntityObject } = useInventoryStore();
 
@@ -48,11 +48,12 @@ const TypeTransactionForm = ({ typeTransactions }) => {
         await fnGetTransaction(row.original.id);
         setEntityObject('TypeTransaction', row.original.id, 'edit');
         setLoading(false);
+        setModalOpen(true);
     };
 
     const handleNew = () => {
         setEntityObject('user', null, 'new');
-
+        setModalOpen(true);
     }
 
     const btnNew =()=> <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger>
@@ -91,6 +92,7 @@ const TypeTransactionForm = ({ typeTransactions }) => {
     ];
 
     return (<>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DataTable columns={columns} data={typeTransactions} btnNew={btnNew} />
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -108,6 +110,7 @@ const TypeTransactionForm = ({ typeTransactions }) => {
 
 
         </DialogContent>
+        </Dialog>
     </>)
 
 }

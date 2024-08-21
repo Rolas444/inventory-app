@@ -8,8 +8,8 @@ interface inventoryState {
     setEntityObject: (entityName: string, entityId: string | null, action: string) => void;
     session: any ;
     setSession: (session: any) => void;
-    imageUrl: string;
-    setImageUrl: (imageUrl: string) => void;
+    modalOpen: boolean;
+    setModalOpen: (value: boolean) => void;
 }
 
 export const useInventoryStore = create<inventoryState>()(
@@ -21,8 +21,8 @@ export const useInventoryStore = create<inventoryState>()(
             setEntityObject: (entityName, entityId, action ) => set({entityName, entityId , action}),
             session: null,
             setSession: (session) => set({session}),
-            imageUrl: 'https://drive.usercontent.google.com/download?id=', 
-            setImageUrl: (imageUrl) => set({imageUrl})
+            modalOpen: false, 
+            setModalOpen: (value) => set({modalOpen: value}),
         })
     )
 );
