@@ -4,22 +4,38 @@ import {
   Dialog,
 } from "@/components/ui/dialog";
 import ProductForms from "./forms";
+import { AuthLevel } from "@/actions/auth-actions";
+import { auth } from "@/auth";
 
 const PageProducts = async () => {
-  var products =[]
-  // var roles = []
-
-  const result = await getQuery("product",{
+  var products = []
+  const session = await auth();
+  const result = await getQuery("product", {
     where: { status: true },
     include: {
       platformProducts: true,
     },
   });
+
+  const fnIsAdmin = async () => {
+    // const datatSession = 
+    const Level = await AuthLevel(session?.user.roleId);
+    const objLevel = JSON.parse(Level);
+
+    if (objLevel.name === 'admin') {
+      return true;
+    }
+
+    return false;
+  }
+
+  const isAdmin = await fnIsAdmin();
+
   // console.log(result);
   if (result.error) {
     return <div>No se encontraron registros</div>;
   }
-  products = JSON.stringify(result.data) ;
+  products = JSON.stringify(result.data);
 
 
   // const columns = userColumns;
@@ -30,9 +46,7 @@ const PageProducts = async () => {
         <h1 className="text-lg font-semibold md:text-2xl">Productos</h1>
       </div>
       <div className="flex flex-col flex-grow container ">
-        <Dialog >
-           <ProductForms products={products} />
-        </Dialog>
+        <ProductForms products={products} isAdmin={isAdmin} />
       </div>
     </>
   );

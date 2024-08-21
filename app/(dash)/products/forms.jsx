@@ -30,10 +30,10 @@ import { getQuery } from "@/actions/query-actions";
 import { platform } from "os";
 import { select } from "@nextui-org/theme";
 
-const ProductForms = ({ products }) => {
+const ProductForms = ({ products , isAdmin}) => {
 
     const [loading, setLoading] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
+    // const [isAdmin, setIsAdmin] = useState(false);
     const [platformColumns, setPlatformColumns] = useState([]);
     const { entityName, entityId, action, session } = useInventoryStore()
     const [currentData, setCurrentData] = useState({});
@@ -162,20 +162,7 @@ const ProductForms = ({ products }) => {
         }
     }
 
-    const getAuth = async () => {
-        // const datatSession = 
-        const Level = await AuthLevel(session?.user.roleId);
-        const objLevel = JSON.parse(Level);
-
-        if (objLevel.name === 'admin') {
-            setIsAdmin(true);
-        }
-
-        // getID
-        const id = await fnGetUserId(session?.user.email);
-        // console.log(id);
-        setUserId(id);
-    }
+    
 
     const btnNew = () => {
         return isAdmin ? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger> : <></>
@@ -256,7 +243,7 @@ const ProductForms = ({ products }) => {
     ];
 
     useEffect(() => {
-        getAuth()
+        
         fnGetPlatforms()
     }, [])
 
