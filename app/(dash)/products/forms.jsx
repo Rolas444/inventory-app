@@ -39,7 +39,7 @@ const ProductForms = ({ products }) => {
     const [currentData, setCurrentData] = useState({});
     const [frmAction, setFrmAction] = useState('register');
     const [userId, setUserId] = useState(null);
-
+    
     const { setEntityObject } = useInventoryStore();
 
     // console.log(products);
@@ -144,7 +144,7 @@ const ProductForms = ({ products }) => {
     const managerForm = ()=>{
         switch (action){
             case 'new':
-                return <FrmRegisterProducts stateForm={action} currentData={currentData} />
+                return <FrmRegisterProducts stateForm={action} currentData={currentData}  />
             case 'edit':
                 return <FrmRegisterProducts stateForm={action} currentData={currentData} />
             case 'addTransaction':

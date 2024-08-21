@@ -5,8 +5,9 @@ import { toast } from "sonner";
 import { CiImageOn } from "react-icons/ci";
 import { RiImageEditFill } from "react-icons/ri";
 import { MdDeleteOutline } from "react-icons/md";
+import { GetUrlBucketSupabase } from "@/lib/tools";
 
-const InputImageControlled = ({ name, control, label, errors, rules, urlBase}) => {
+const InputImageControlled = ({ name, control, label, errors, rules}) => {
 
     const inpurRef = useRef(null);
     const [files, setFiles] = useState('');
@@ -47,7 +48,7 @@ const InputImageControlled = ({ name, control, label, errors, rules, urlBase}) =
             control={control}
             render={({ field }) => {
 
-                const imageView = files.length > 0 ? files : `${urlBase}${field.value}&export=view`;
+                const imageView = files.length > 0 ? files : GetUrlBucketSupabase(field.value);
 
             return (<>
                 <div className="group w-full d-inline-block position-relative opacity-trigger-hover p-2 group">

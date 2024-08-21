@@ -8,11 +8,12 @@ import { createQuery, updateQuery } from "@/actions/query-actions";
 import { updateDataForm } from "@/lib/tools";
 import InputImageControlled from "@/components/ui/input-image-controlled";
 import { CiImageOn } from "react-icons/ci";
-import { deleteFile, uploadFile } from "../../actions/drive-actions";
+// import { deleteFile, uploadFile } from "../../actions/drive-actions";
 import { useInventoryStore } from "@/zustand/store";
 import { Loader } from "lucide-react";
+import { deleteFile, uploadFile } from "../../actions/supabase";
 
-const FrmRegisterProducts = ({ stateForm, currentData }) => {
+const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
     const [modalLoading, setModalLoading] = useState(false);
 
     const router = useRouter()
@@ -27,7 +28,7 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
         image: ''
     });
 
-    const {imageUrl} = useInventoryStore()
+    // const {imageUrl} = useInventoryStore()
 
     const dataForm = stateForm === 'edit' ? currentData : initForm;
 
@@ -39,10 +40,14 @@ const FrmRegisterProducts = ({ stateForm, currentData }) => {
         if(originalImg !== currentImg){
             if(originalImg.length > 0 && stateForm === 'edit'){
                 console.log('borrando imagen');
-                await deleteFile(originalImg);
+                // await deleteFile(originalImg);
+                let res =await deleteFile(originalImg);
+                console.log(res);
+                
             }
 
             if(currentImg.length > 0){
+                // const response = await uploadFile(currentImg, fileName);
                 const response = await uploadFile(currentImg, fileName);
                 console.log(response);
                 return response; 

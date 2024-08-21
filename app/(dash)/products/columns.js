@@ -1,4 +1,5 @@
 'use client'
+import { GetUrlBucketSupabase } from '@/lib/tools';
 import {CiImageOn} from 'react-icons/ci'
 
 export const productColumns = [
@@ -43,7 +44,7 @@ export const productColumns = [
         cell: ({ row }) => {
           return (
             <div className="flex justify-center">
-              {row.original.image ? <></>:<><CiImageOn  className="text-cyan-800 w-6 h-6 align-center"/></>}
+              {row.original.image ? <><img src={GetUrlBucketSupabase(row.original.image)} alt={row.original.image} className='h-6'  /></>:<><CiImageOn  className="text-cyan-800 w-6 h-6 align-center"/></>}
             </div>
           );
         },
