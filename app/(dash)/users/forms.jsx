@@ -32,7 +32,7 @@ const UserForms = ({ users }) => {
     const [loading, setLoading] = useState(false);
 
     const fnGetUser = async (id) => {
-        const result = await getQuery("user", {where: {id: id}});
+        const result = await getQuery("user", {where: {id: id, status: true}});
         if (result.error) {
             toast.error('Error al obtener usuario');
         }

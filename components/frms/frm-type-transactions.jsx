@@ -17,7 +17,6 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
     const [initForm, setInitForm] = useState({
         name: '',
         description: '',
-        status: false,
         platform: false,
         visible: false
     });
@@ -64,7 +63,7 @@ const FrmTypeTransactions = ({ stateForm , currentData }) => {
                     <div className="w-full">
                         <InputControlled control={control} name="name" label="Nombre" rules={{ required: true }} />
                         <InputControlled control={control} name="description" label="Descripción" />
-                        <CheckboxControlled control={control} name="status" label="Activo" />
+                        {/* <CheckboxControlled control={control} name="status" label="Activo" /> */}
                         <CheckboxControlled control={control} name="platform" label="Es plataforma" />
                         <CheckboxControlled control={control} name="visible" label="Visible en Tabla" />
 

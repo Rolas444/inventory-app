@@ -25,8 +25,7 @@ const FrmRegister = ({stateForm, currentData}) => {
         email: '',
         password: '',
         phone: '',
-        roleId: '',
-        status: false
+        roleId: ''
     });
 
     const dataForm = stateForm==='edit'?  updateDataForm(initForm,currentData, 'id') : initForm;
@@ -106,7 +105,7 @@ const FrmRegister = ({stateForm, currentData}) => {
                         {/* <AutocompleteControlled name='roleId' control={control} label='Rol' options={roles} /> */}
                         {/* <ComboboxControlled name='roleId' control={control} label='Rol' options={roles} /> */}
                         <SelectControlled name='roleId' control={control} label='Rol' options={roles} />
-                        <CheckboxControlled name='status' control={control} label='Activo' />
+                        {/* <CheckboxControlled name='status' control={control} label='Activo' /> */}
 
                     </div>
                 </div>

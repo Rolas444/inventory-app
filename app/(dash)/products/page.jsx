@@ -10,6 +10,7 @@ const PageProducts = async () => {
   // var roles = []
 
   const result = await getQuery("product",{
+    where: { status: true },
     include: {
       platformProducts: true,
     },

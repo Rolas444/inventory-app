@@ -32,7 +32,7 @@ const TypeTransactionForm = ({ typeTransactions }) => {
 
 
     const fnGetTransaction = async (id) => {
-        const result = await getQuery("TypeTransaction", {where: {id: id}});
+        const result = await getQuery("TypeTransaction", {where: {id: id, status: true}});
         if (result.error) {
             toast.error('Error al obtener usuario');
         }

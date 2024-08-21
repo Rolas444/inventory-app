@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 import { createQuery, updateQuery } from "@/actions/query-actions";
 import { updateDataForm } from "@/lib/tools";
 import InputImageControlled from "@/components/ui/input-image-controlled";
-import { CiImageOn } from "react-icons/ci";
+// import { CiImageOn } from "react-icons/ci";
 // import { deleteFile, uploadFile } from "../../actions/drive-actions";
-import { useInventoryStore } from "@/zustand/store";
+// import { useInventoryStore } from "@/zustand/store";
 import { Loader } from "lucide-react";
 import { deleteFile, uploadFile } from "../../actions/supabase";
 
@@ -20,7 +20,7 @@ const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
     const [initForm, setInitForm] = useState({
         name: '',
         sku: '',
-        status: false,
+        status: true,
         initStock: 0,
         price: 0.00,
         cost: 0.00,
@@ -51,7 +51,10 @@ const FrmRegisterProducts = ({ stateForm, currentData, imageUrl }) => {
                 const response = await uploadFile(currentImg, fileName);
                 console.log(response);
                 return response; 
+            }else{
+                return '';
             }
+
 
         }else{
             return originalImg;
