@@ -30,7 +30,7 @@ import { getQuery } from "@/actions/query-actions";
 import { platform } from "os";
 import { select } from "@nextui-org/theme";
 
-const ProductForms = ({ products , isAdmin}) => {
+const ProductForms = ({ products , isAdmin, userId}) => {
 
     const [loading, setLoading] = useState(false);
     // const [isAdmin, setIsAdmin] = useState(false);
@@ -38,7 +38,7 @@ const ProductForms = ({ products , isAdmin}) => {
     const { entityName, entityId, action, session } = useInventoryStore()
     const [currentData, setCurrentData] = useState({});
     const [frmAction, setFrmAction] = useState('register');
-    const [userId, setUserId] = useState(null);
+    // const [userId, setUserId] = useState(null);
 
     const { setEntityObject, modalOpen, setModalOpen } = useInventoryStore();
 
@@ -93,22 +93,7 @@ const ProductForms = ({ products , isAdmin}) => {
 
     }
 
-    const fnGetUserId = async (email) => {
-        const result = await getQuery('User', {
-            where: {
-                email: email
-            },
-            select: {
-                id: true
-            }
-        })
-        if (result.error) {
-            toast.error('Error al obtener usuario');
-        }
-        if (result.success) {
-            return result.data[0].id;
-        }
-    }
+   
 
     const fnGetPlatforms = async () => {
         const result = await getQuery('TypeTransaction', {
@@ -243,7 +228,7 @@ const ProductForms = ({ products , isAdmin}) => {
     ];
 
     useEffect(() => {
-        
+        // getAuth()
         fnGetPlatforms()
     }, [])
 

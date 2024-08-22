@@ -17,6 +17,25 @@ const PageProducts = async () => {
     },
   });
 
+  const fnGetUserId = async (email) => {
+    const result = await getQuery('User', {
+      where: {
+        email: email
+      },
+      select: {
+        id: true
+      }
+    })
+    if (result.error) {
+      toast.error('Error al obtener usuario');
+    }
+    if (result.success) {
+      return result.data[0].id;
+    }
+  }
+
+  const userId = await fnGetUserId(session?.user.email);
+
   const fnIsAdmin = async () => {
     // const datatSession = 
     const Level = await AuthLevel(session?.user.roleId);
@@ -46,7 +65,7 @@ const PageProducts = async () => {
         <h1 className="text-lg font-semibold md:text-2xl">Productos</h1>
       </div>
       <div className="flex flex-col flex-grow container ">
-        <ProductForms products={products} isAdmin={isAdmin} />
+        <ProductForms products={products} isAdmin={isAdmin} userId={userId} />
       </div>
     </>
   );

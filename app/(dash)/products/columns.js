@@ -6,6 +6,8 @@ export const productColumns = [
     {
       header: "Nombre",
       accessorKey: "name",
+      size: 100,
+      minSize: 100,
     },
     {
       header: "SKU",
