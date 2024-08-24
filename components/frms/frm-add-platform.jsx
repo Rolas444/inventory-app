@@ -91,6 +91,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
 
         if(actionForm ==='edit'){
             const formData = validForm;
+            validForm.quantity = Number(validForm.initQuantity || 0);
             result = await updateQuery('PlatformProduct', {id: formData.id},  formData);
         }
 
@@ -126,7 +127,7 @@ const FrmAddPlatform = ({ stateForm, currentData }) => {
                 <div className="w-full flex justify-between gap-2">
 
                     <div className="w-full">
-                        <InputControlled name='initQuantity' type="number" control={control} label='Cantidad Ofertada inicial' rules={{ required: false }} />
+                        <InputControlled name='initQuantity' type="number" control={control} label='Cantidad Ofertada ' rules={{ required: false }} />
 
                     </div>
                     <div className="w-full">
