@@ -175,7 +175,7 @@ async function LayoutDash({
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
-          <main className="flex h-screen flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+          <main className="flex h-screen flex-1 flex-col">
             {children}
           </main>
         </div>

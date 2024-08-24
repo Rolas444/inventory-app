@@ -22,7 +22,7 @@ export const productColumns = [
       accessorKey: "stock",
       cell: ({ row }) => {
         return (
-          <div className="flex justify-center font-bold">
+          <div className={`flex justify-center font-bold ${row.original.stock <2 && ' text-red-600'} `}>
             {row.original.stock}
           </div>
         );
@@ -46,7 +46,7 @@ export const productColumns = [
         cell: ({ row }) => {
           return (
             <div className="flex justify-center">
-              {row.original.image ? <><img src={GetUrlBucketSupabase(row.original.image)} alt={row.original.image} className='h-8'  /></>:<><CiImageOn  className="text-cyan-800 w-6 h-6 align-center"/></>}
+              {row.original.image ? <><img src={GetUrlBucketSupabase(row.original.image)} alt={row.original.image} className='h-[60px]'  /></>:<><CiImageOn  className="text-cyan-800 w-[60px] h-[60px] align-center"/></>}
             </div>
           );
         },

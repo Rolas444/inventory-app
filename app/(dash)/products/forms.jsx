@@ -153,7 +153,7 @@ const ProductForms = ({ products , isAdmin, userId}) => {
         return isAdmin ? <DialogTrigger onClick={handleNew}>Nuevo</DialogTrigger> : <></>
     }
 
-    const authColumns = () => isAdmin ? productColumns : productColumns.filter(col => col.accessorKey !== 'wholesale')
+    const authColumns = () => isAdmin ? productColumns : productColumns.filter(col => col.accessorKey !== 'cost')
 
 
     const columns = [...authColumns(),
