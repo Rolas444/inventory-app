@@ -45,8 +45,8 @@ export const productColumns = [
         accessorKey: "image",
         cell: ({ row }) => {
           return (
-            <div className="flex justify-center h-[80px] w-[80px]">
-              {row.original.image ? <><img src={GetUrlBucketSupabase(row.original.image)} alt={row.original.image} className='h-[80px] max-w-full object-contain'  /></>:<><CiImageOn  className="text-cyan-800 w-[60px] h-[60px] align-center"/></>}
+            <div className="flex justify-center ">
+              {row.original.image ? <><img src={GetUrlBucketSupabase(row.original.image)} alt={row.original.image} className='h-[110px] max-w-full object-contain'  /></>:<><CiImageOn  className="text-cyan-800 w-[60px] h-[60px] align-center"/></>}
             </div>
           );
         },
