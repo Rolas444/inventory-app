@@ -43,7 +43,7 @@ export const initValues = async () => {
 };
 
 export const getQuery = async (enityName, param = null) => {
-  console.log(param);
+  // console.log(param);
   try {
     const result = param
       ? await prisma[enityName].findMany(param)
@@ -75,11 +75,12 @@ export const createQuery = async (enityName, data) => {
   }
 };
 
-export const groupByQuery = async (enityName, groupByParams, includeParams ={}) => {
+export const groupByQuery = async (enityName, groupByParams ) => {
   try{
-    const result = await prisma[enityName].groupBy(groupByParams, includeParams);
-    const objresult= { success: true, data: result };
-    return JSON.stringify(objresult);
+    const result =  await prisma[enityName].groupBy(groupByParams);
+    console.log(result)
+    return { success: true, data: result };
+    // return JSON.stringify(objresult);
   }catch(e){
     const objError= { error: e.message };
     return JSON.stringify(objError);

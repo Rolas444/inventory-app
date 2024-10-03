@@ -26,7 +26,7 @@ export const TopRegisters = ({topRegister =[]}) => {
                                     <td className='border px-2' >{item?.createdAt}</td>
                                     <td className='border px-2 whitespace-nowrap overflow-hidden'>{item?.product?.name}</td>
                                     <td className='border px-2'>{item?.typeTransaction?.name}</td>
-                                    <td className='border px-2'>{item?.quantity}</td>
+                                    <td className='border px-2 text-center'>{item.type =='O'? `-`: ` `}{item?.quantity}</td>
                                 </tr>
                             )
                         })

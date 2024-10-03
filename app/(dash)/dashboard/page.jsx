@@ -1,7 +1,9 @@
 
-import { getQuery } from "@/actions/query-actions";
+import { getQuery, groupByQuery } from "@/actions/query-actions";
+import TopProducts from "@/components/dashboard/top-products";
 import TopRegisters from "@/components/dashboard/top-registers";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { type } from "os";
 import React from "react";
 import { toast } from "sonner";
 
@@ -22,6 +24,7 @@ const DashboardPage = async () => {
 
       if (result.error) {
         toast.error('Error al obtener usuario');
+        return []
       }
       if (result.success) {
         return result.data;
@@ -29,8 +32,37 @@ const DashboardPage = async () => {
     
   }
 
+  const getTopProducts = async ()=>{
+    const result = await groupByQuery('transaction', {
+      by: ['productId'],
+      where: {
+        type: 'O',
+      },
+      _sum:{
+        quantity: true,
+      },
+      orderBy: {
+        _sum: {
+          quantity: 'desc'
+        },
+      },
+      take: 5,
+    });
+
+    if (result.error) {
+      toast.error('Error al obtener usuario');
+      return []
+    }
+    if (result.success) {
+      // console.log(data)
+      return result.data;
+
+    }
+  }
+
   const TopRegister = await getTopRegisters();
-  
+  const ListProducts = await getTopProducts();
+  console.log(ListProducts)
   return (
     <>
       <div className="flex items-center">
@@ -74,7 +106,7 @@ const DashboardPage = async () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-
+                <TopProducts listProducts={ListProducts} />
               </CardContent>
 
             </Card>
