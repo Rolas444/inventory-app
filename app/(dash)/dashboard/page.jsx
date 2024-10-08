@@ -60,9 +60,44 @@ const DashboardPage = async () => {
     }
   }
 
+  const getListProductsById=async (list)=>{
+    const result = await getQuery('product', {
+      where: {
+        id: {in : list}
+      }
+    })
+
+    if (result.error) {
+      toast.error('Error al obtener usuario');
+      return []
+    }
+    if (result.success) {
+      // console.log(data)
+      return result.data;
+
+    }
+
+    return []
+  }
+
   const TopRegister = await getTopRegisters();
   const ListProducts = await getTopProducts();
-  console.log(ListProducts)
+
+  const ListIdProducts = ListProducts.map(item=> item.productId)
+  const filterListProducts = await getListProductsById(ListIdProducts || [])
+  // console.log(filterListProducts)
+  const NewListProducts = ListProducts.map( lp =>{
+    // console.log(lp)
+    const product = filterListProducts.find(p=> p.id == lp.productId)
+    // console.log(product)
+    return {
+      ...lp,
+      product
+    }
+  }
+  )
+
+  // console.log(NewListProducts)
   return (
     <>
       <div className="flex items-center">
@@ -106,7 +141,7 @@ const DashboardPage = async () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <TopProducts listProducts={ListProducts} />
+                <TopProducts listProducts={NewListProducts}  />
               </CardContent>
 
             </Card>
