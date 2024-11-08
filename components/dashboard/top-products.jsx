@@ -3,7 +3,7 @@ import React from 'react'
 
 const TopProducts = ({listProducts }) => {
 
-    console.log(listProducts)
+    // console.log(listProducts)
 
   return (
     <div>

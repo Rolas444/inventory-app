@@ -2,12 +2,20 @@
 import { getQuery, groupByQuery } from "@/actions/query-actions";
 import TopProducts from "@/components/dashboard/top-products";
 import TopRegisters from "@/components/dashboard/top-registers";
+import TotalMensual from "@/components/dashboard/total-mensual";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { select } from "@nextui-org/theme";
 import { type } from "os";
 import React from "react";
 import { toast } from "sonner";
+import Decimal from 'decimal.js'
 
 const DashboardPage = async () => {
+
+  const today = new Date(); 
+  const startOfThisMonth = new Date(today.getFullYear(), today.getMonth(), 1); 
+  const startOfLastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1); 
+  const endOfLastMonth = new Date(today.getFullYear(), today.getMonth(), 0);
 
   const getTopRegisters = async ()=>{
     const result = await getQuery("transaction", {
@@ -32,6 +40,46 @@ const DashboardPage = async () => {
     
   }
 
+  const getTotalSales = async ()=>{
+    const result = await  getQuery('transaction', {
+      where:{
+        type: 'O',
+        dateOp: {
+          gte:startOfLastMonth,
+          lte: today //endOfLastMonth
+        }
+      },
+      select:{
+        quantity: true,
+        dateOp: true,
+        product: {
+          select:{
+            price: true,
+            wholesale: true
+          }
+        }
+      }
+    })
+
+    if(result.data){
+      var sumaTotal = new Decimal(0);
+      result.data.forEach(item=>{
+        console.log(item)
+        let itemValue;
+        if(item.quantity>2){
+          itemValue = new Decimal(item.product.price.toNumber()).times(item.quantity)
+        }else{
+          itemValue = new Decimal(item.product.wholesale.toNumber()).times(item.quantity)
+        }
+        sumaTotal = sumaTotal.plus(itemValue)
+      })
+
+      return sumaTotal.toNumber();
+    }
+
+    return null;
+  }
+
   const getTopProducts = async ()=>{
     const result = await groupByQuery('transaction', {
       by: ['productId'],
@@ -50,7 +98,7 @@ const DashboardPage = async () => {
     });
 
     if (result.error) {
-      toast.error('Error al obtener usuario');
+      // toast.error('Error al obtener usuario');
       return []
     }
     if (result.success) {
@@ -68,7 +116,7 @@ const DashboardPage = async () => {
     })
 
     if (result.error) {
-      toast.error('Error al obtener usuario');
+      // toast.error('Error al obtener usuario');
       return []
     }
     if (result.success) {
@@ -80,15 +128,16 @@ const DashboardPage = async () => {
     return []
   }
 
-  const getTotalSales = async ()=>{
-    const result  = await getQuery('transactions',{
+  // const getTotalSales = async ()=>{
+  //   const result  = await getQuery('transactions',{
       
-    })
-  }
+  //   })
+  // }
 
   const TopRegister = await getTopRegisters();
   const ListProducts = await getTopProducts();
-
+  const TotalVentas = await getTotalSales();
+  // console.log(TotalVentas.toNumber())
   const ListIdProducts = ListProducts.map(item=> item.productId)
   const filterListProducts = await getListProductsById(ListIdProducts || [])
   // console.log(filterListProducts)
@@ -164,7 +213,7 @@ const DashboardPage = async () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-
+                <TotalMensual sumaTotal={TotalVentas} />
               </CardContent>
 
             </Card>

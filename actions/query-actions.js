@@ -78,7 +78,7 @@ export const createQuery = async (enityName, data) => {
 export const groupByQuery = async (enityName, groupByParams ) => {
   try{
     const result =  await prisma[enityName].groupBy(groupByParams);
-    console.log(result)
+    // console.log(result)
     return { success: true, data: result };
     // return JSON.stringify(objresult);
   }catch(e){
