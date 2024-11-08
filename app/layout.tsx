@@ -21,7 +21,7 @@ export default async function RootLayout({
 
   const initQuery: any = await initValues();
   if (initQuery.error) {
-    toast.error(initQuery.error);
+    // toast.error(initQuery.error);
   }
 
   return (

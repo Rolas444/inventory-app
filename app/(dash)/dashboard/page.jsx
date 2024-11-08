@@ -80,6 +80,12 @@ const DashboardPage = async () => {
     return []
   }
 
+  const getTotalSales = async ()=>{
+    const result  = await getQuery('transactions',{
+      
+    })
+  }
+
   const TopRegister = await getTopRegisters();
   const ListProducts = await getTopProducts();
 
@@ -88,7 +94,7 @@ const DashboardPage = async () => {
   // console.log(filterListProducts)
   const NewListProducts = ListProducts.map( lp =>{
     // console.log(lp)
-    const product = filterListProducts.find(p=> p.id == lp.productId)
+  const product = filterListProducts.find(p=> p.id == lp.productId)
     // console.log(product)
     return {
       ...lp,
