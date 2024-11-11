@@ -9,6 +9,7 @@ import { type } from "os";
 import React from "react";
 import { toast } from "sonner";
 import Decimal from 'decimal.js'
+import TotalPlatform from "@/components/dashboard/total-platform";
 
 const DashboardPage = async () => {
 
@@ -37,7 +38,6 @@ const DashboardPage = async () => {
       if (result.success) {
         return result.data;
       }
-    
   }
 
   const getTotalSales = async ()=>{
@@ -46,7 +46,7 @@ const DashboardPage = async () => {
         type: 'O',
         dateOp: {
           gte:startOfLastMonth,
-          lte: today //endOfLastMonth
+          lte: endOfLastMonth
         }
       },
       select:{
@@ -64,7 +64,7 @@ const DashboardPage = async () => {
     if(result.data){
       var sumaTotal = new Decimal(0);
       result.data.forEach(item=>{
-        console.log(item)
+        // console.log(item)
         let itemValue;
         if(item.quantity>2){
           itemValue = new Decimal(item.product.price.toNumber()).times(item.quantity)
@@ -128,6 +128,53 @@ const DashboardPage = async () => {
     return []
   }
 
+  const getTotalByPlatform = async()=>{
+    const result = await  getQuery('transaction', {
+      where:{
+        type: 'O',
+        dateOp: {
+          gte:startOfLastMonth,
+          lte: endOfLastMonth
+        }
+      },
+      select:{
+        quantity: true,
+        dateOp: true,
+        typeTransaction: true,
+        product: true
+      }
+    })
+
+    if (result.error) {
+      // toast.error('Error al obtener usuario');
+      return []
+    }
+    if (result.success) {
+      
+      var sumByPlatform = {}
+      result.data.forEach(item=>{
+        const nameP = item.typeTransaction.name
+        const qt = item.quantity
+        const value = item.quantity>2 ? item.product.price * qt : item.product.wholesale * qt ;
+        if(!sumByPlatform[nameP] ){
+          sumByPlatform[nameP]=0
+        }
+
+        sumByPlatform[nameP]+=value
+
+        
+      })
+
+
+      return sumByPlatform = Object.keys(sumByPlatform).map(pt=>({
+        name: pt,
+        total: sumByPlatform[pt]
+      }))
+
+    }
+    // return [{name: 'cat1', total: '15.36'}, {name: 'cat2', total: '19.36'}]
+  }
+
   // const getTotalSales = async ()=>{
   //   const result  = await getQuery('transactions',{
       
@@ -137,7 +184,8 @@ const DashboardPage = async () => {
   const TopRegister = await getTopRegisters();
   const ListProducts = await getTopProducts();
   const TotalVentas = await getTotalSales();
-  // console.log(TotalVentas.toNumber())
+  const TotalByPlatform = await getTotalByPlatform();
+  // console.log(TotalByPlatform)
   const ListIdProducts = ListProducts.map(item=> item.productId)
   const filterListProducts = await getListProductsById(ListIdProducts || [])
   // console.log(filterListProducts)
@@ -230,7 +278,7 @@ const DashboardPage = async () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-
+                <TotalPlatform listPlatform={TotalByPlatform} />
               </CardContent>
 
             </Card>
