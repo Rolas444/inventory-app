@@ -3,9 +3,9 @@ import React from 'react'
 const TotalPlatform = ({ listPlatform = [] }) => {
     return (
         <>
-            {listPlatform.map(item => {
+            {listPlatform.map((item, i) => {
                 return (
-                    <div className='flex w-full justify-between p-2'>
+                    <div key={i} className='flex w-full justify-between p-2'>
                         <div className=''>
                             {item.name}
                         </div>
